@@ -1,0 +1,108 @@
+import jaci.gradle.deploy.DeployContext
+import jaci.gradle.deploy.artifact.FileCollectionArtifact
+import jaci.openrio.gradle.frc.FRCJavaArtifact
+import jaci.openrio.gradle.frc.RoboRIO
+import org.gradle.api.java.archives.internal.DefaultManifest
+
+plugins {
+    id "java"
+    id "jaci.openrio.gradle.GradleRIO" version "2018.03.06"
+}
+
+def robotDir = '/home/lvuser/LeviTator2'
+
+deploy {
+    targets {
+        target("roborio", RoboRIO) {
+            team = teamNumber
+            directory = robotDir
+        }
+    }
+    artifacts {
+        artifact('frcJava', FRCJavaArtifact) {
+            targets << 'roborio'
+            filename = "LeviTator2.jar"
+            arguments = ["$robotDir/config"]
+//            debug = true
+        }
+        artifact('config', FileCollectionArtifact) {
+            targets << 'roborio'
+            files = rootProject.fileTree('config/')
+            directory = 'config'
+            postdeploy << { DeployContext ctx ->
+                ctx.execute("chmod 755 .; chown lvuser .")
+//                ctx.execute("sync")
+            }
+        }
+        artifact('dependencies', FileCollectionArtifact) {
+            targets << 'roborio'
+            files = project.configurations.compile
+            directory = 'libs'
+        }
+        artifact('permissions', jaci.gradle.deploy.artifact.CommandArtifact) {
+            targets << 'roborio'
+            command = "chmod 755 .; chown lvuser ."
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "Eclipse Paho"
+        url = "https://repo.eclipse.org/content/repositories/paho-releases/"
+    }
+    flatDir {
+        dirs file("lib")
+    }
+}
+
+wpi {
+    wpilibVersion = '2018.4.1'
+    wpiutilVersion = '3.2.0'
+    ntcoreVersion = '4.1.0'
+    shuffleboardVersion = '1.3.1'
+}
+
+dependencies {
+    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.12'
+//    compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.1.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.4'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.4'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.4'
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.9.4'
+    compile group: 'com.google.guava', name: 'guava', version: '24.1-jre'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile group: 'org.slf4j', name: 'slf4j-ext', version: '1.7.25'
+    compile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    compile group: 'org.apache.commons', name: 'commons-csv', version: '1.5'
+
+    compile wpilib()
+//    compile ctre()
+    compile name: 'CTRE_Phoenix'
+    compile name: 'CTRE_Phoenix-sources'
+    compile name: 'CTRE_Phoenix-javadoc'
+    nativeLib name: 'libCTRE_PhoenixCCI', ext: 'so'
+    nativeLib name: 'libCTRLibDriver', ext: 'so'
+    nativeLib name: 'libCTRLibDriver', ext: 'so.debug'
+//    compile navx()
+    compile openrio.powerup.matchData()
+
+    testCompile group: 'org.testng', name: 'testng', version: '6.14.2'
+}
+
+jar {
+    from configurations.compile.findAll { it.isDirectory() }
+    manifest { DefaultManifest mf ->
+        mf.attributes 'Main-Class': 'org.teamtators.common.Robot',
+                'Robot-Class': 'org.teamtators.levitator.TatorRobot',
+                'Class-Path': project.configurations.compile.collect {
+                    "$robotDir/libs/${it.getName()}"
+                }.join(' ')
+    }
+}
+
+test {
+    useTestNG()
+}
