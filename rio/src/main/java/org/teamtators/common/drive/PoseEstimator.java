@@ -4,7 +4,6 @@ import org.teamtators.common.control.AbstractUpdatable;
 import org.teamtators.common.drive.TankKinematics;
 import org.teamtators.common.math.Pose2d;
 import org.teamtators.common.math.Rotation;
-import org.teamtators.levitator.subsystems.Drive;
 
 /**
  * @author Alex Mikhalev

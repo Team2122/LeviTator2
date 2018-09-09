@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-
+@SuppressWarnings("unchecked")
 public abstract class AbstractController extends AbstractUpdatable implements DataLoggable {
 
     private DataCollector dataCollector = DataCollector.getDataCollector();

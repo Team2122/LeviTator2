@@ -1,7 +1,7 @@
 package org.teamtators.common.hw;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.ControllerPower;
+import edu.wpi.first.wpilibj.RobotController;
 
 public class DistanceLaser {
     private double distance0V;
@@ -30,7 +30,7 @@ public class DistanceLaser {
     }
 
     public double getDistance() {
-        double prop = distanceLaser.getVoltage() / ControllerPower.getVoltage5V();
+        double prop = distanceLaser.getVoltage() / RobotController.getVoltage5V();
         return (prop * (distance5V - distance0V)) + distance0V;
     }
 

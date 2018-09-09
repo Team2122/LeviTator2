@@ -96,7 +96,7 @@ jar {
     from configurations.compile.findAll { it.isDirectory() }
     manifest { DefaultManifest mf ->
         mf.attributes 'Main-Class': 'org.teamtators.common.Robot',
-                'Robot-Class': 'org.teamtators.levitator.TatorRobot',
+                'Robot-Class': 'org.teamtators.levitator2.TatorRobot',
                 'Class-Path': project.configurations.compile.collect {
                     "$robotDir/libs/${it.getName()}"
                 }.join(' ')

@@ -24,10 +24,12 @@ public class Subsystems extends SubsystemsBase
     private final List<Updatable> motorUpdatables;
 
     private OperatorInterface oi;
+    private Drive drive;
 
     public Subsystems() {
         oi = new OperatorInterface();
-        subsystems = Arrays.asList(oi);
+        drive = new Drive();
+        subsystems = Arrays.asList(oi, drive);
 
         updatables = new ArrayList<>();
         motorUpdatables = new ArrayList<>();
@@ -72,14 +74,26 @@ public class Subsystems extends SubsystemsBase
     @Override
     public void deconfigure() {
         oi.deconfigure();
+        drive.deconfigure();
     }
 
     @Override
     public void configure(Subsystems.Config config) {
         oi.configure(config.operatorInterface);
+        drive.configure(config.drive);
     }
 
-    public class Config {
+    public OperatorInterface getOperatorInterface() {
+        return oi;
+    }
+
+    public Drive getDrive() {
+        return drive;
+    }
+
+
+    public static class Config {
         public OperatorInterface.Config operatorInterface;
+        public Drive.Config drive;
     }
 }
