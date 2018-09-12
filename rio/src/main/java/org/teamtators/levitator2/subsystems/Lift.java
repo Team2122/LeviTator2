@@ -1,21 +1,26 @@
 package org.teamtators.levitator2.subsystems;
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SpeedController;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import org.teamtators.common.config.Configurable;
 import org.teamtators.common.config.Deconfigurable;
-import org.teamtators.common.config.helpers.EncoderConfig;
 import org.teamtators.common.config.helpers.SpeedControllerConfig;
+import org.teamtators.common.config.helpers.SpeedControllerGroupConfig;
 import org.teamtators.common.control.ControllerPredicates;
 import org.teamtators.common.control.MotorPowerUpdater;
 import org.teamtators.common.control.TrapezoidalProfileFollower;
+import org.teamtators.common.hw.SRXEncoder;
+import org.teamtators.common.hw.SpeedControllerGroup;
 import org.teamtators.common.scheduler.Subsystem;
+import org.teamtators.common.tester.ManualTestGroup;
+import org.teamtators.common.tester.components.SRXEncoderTest;
+import org.teamtators.common.tester.components.SpeedControllerTest;
 
 public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconfigurable {
     private TrapezoidalProfileFollower controller;
     private MotorPowerUpdater liftPowerUpdater;
-    private SpeedController liftMotor;
-    private Encoder liftEncoder;
+    private SpeedControllerGroup liftMotor;
+    private WPI_TalonSRX liftMaster;
+    private SRXEncoder liftEncoder;
     private double desiredHeight;
     private double heightToMoveTo; // D:
     private double maxHeight;
@@ -37,7 +42,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     }
 
     private double getCurrentVelocity() {
-        return liftEncoder.getRate();
+        return liftEncoder.getVelocity();
     }
 
     private double getCurrentHeight() {
@@ -60,12 +65,12 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     }
 
     public void checkProfiles() {
-        if(getCurrentHeight() >= config.changeProfileHeight && currentProfileLow) {
+        if (getCurrentHeight() >= config.changeProfileHeight && currentProfileLow) {
             controller.stop();
             controller.configure(config.liftControllerHigh);
             currentProfileLow = false;
             setTargetHeight(heightToMoveTo); //assume it's still safe, no reason why it shouldn't be
-        } else if(getCurrentHeight() < config.changeProfileHeight && !currentProfileLow) {
+        } else if (getCurrentHeight() < config.changeProfileHeight && !currentProfileLow) {
             controller.stop();
             controller.configure(config.liftControllerLow);
             currentProfileLow = true;
@@ -76,7 +81,9 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     @Override
     public void configure(Config config) {
         liftMotor = config.liftMotor.create();
-        liftEncoder = config.liftEncoder.create();
+        liftMaster = (WPI_TalonSRX) liftMotor.getSpeedControllers()[0];
+        liftEncoder = new SRXEncoder(liftMaster);
+        liftEncoder.configure(config.liftEncoder);
         controller.configure(config.liftControllerLow);
         currentProfileLow = true;
         liftPowerUpdater = new MotorPowerUpdater(liftMotor);
@@ -86,17 +93,26 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     }
 
     public void deconfigure() {
-        liftEncoder.free();
+        //liftEncoder.free();
         SpeedControllerConfig.free(liftMotor);
         liftPowerUpdater = null;
+    }
+
+    @Override
+    public ManualTestGroup createManualTests() {
+        ManualTestGroup tests = super.createManualTests();
+        tests.addTest(new SpeedControllerTest("liftMotor", liftMotor));
+        tests.addTest(new SRXEncoderTest("liftEncoder", liftEncoder));
+
+        return tests;
     }
 
     public class Config {
         public double maxHeight;
         public double changeProfileHeight;
 
-        public SpeedControllerConfig liftMotor;
-        public EncoderConfig liftEncoder;
+        public SpeedControllerGroupConfig liftMotor;
+        public SRXEncoder.Config liftEncoder;
         public TrapezoidalProfileFollower.Config liftControllerLow;
         public TrapezoidalProfileFollower.Config liftControllerHigh;
     }

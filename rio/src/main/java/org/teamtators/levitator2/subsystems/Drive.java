@@ -1,5 +1,6 @@
 package org.teamtators.levitator2.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Sendable;
@@ -11,6 +12,7 @@ import org.teamtators.common.config.helpers.SpeedControllerGroupConfig;
 import org.teamtators.common.control.*;
 import org.teamtators.common.drive.*;
 import org.teamtators.common.hw.ADXRS453;
+import org.teamtators.common.hw.SRXEncoder;
 import org.teamtators.common.hw.SpeedControllerGroup;
 import org.teamtators.common.math.Pose2d;
 import org.teamtators.common.math.Rotation;
@@ -33,8 +35,8 @@ public class Drive extends Subsystem implements Configurable<Drive.Config>, Tank
     public static final Predicate<TrapezoidalProfileFollower> DEFAULT_PREDICATE = ControllerPredicates.finished();
     private SpeedControllerGroup leftMotor;
     private SpeedControllerGroup rightMotor;
-    private Encoder rightEncoder;
-    private Encoder leftEncoder;
+    private SRXEncoder rightEncoder;
+    private SRXEncoder leftEncoder;
     private ADXRS453 gyro;
     private PidController rotationController = new PidController("Drive.rotationController");
 
@@ -277,11 +279,11 @@ public class Drive extends Subsystem implements Configurable<Drive.Config>, Tank
     }
 
     public double getLeftRate() {
-        return leftEncoder.getRate();
+        return leftEncoder.getVelocity();
     }
 
     public double getRightRate() {
-        return rightEncoder.getRate();
+        return rightEncoder.getVelocity();
     }
 
     public double getLeftDistance() {
@@ -355,9 +357,9 @@ public class Drive extends Subsystem implements Configurable<Drive.Config>, Tank
         ManualTestGroup tests = super.createManualTests();
 
         tests.addTests(new SpeedControllerTest("LeftMotor", leftMotor));
-        tests.addTests(new EncoderTest("LeftEncoder", leftEncoder));
+        tests.addTests(new SRXEncoderTest("LeftEncoder", leftEncoder));
         tests.addTests(new SpeedControllerTest("RightMotor", rightMotor));
-        tests.addTests(new EncoderTest("RightEncoder", rightEncoder));
+        tests.addTests(new SRXEncoderTest("RightEncoder", rightEncoder));
 
         tests.addTests(new ADXRS453Test("gyro", gyro));
 
@@ -413,8 +415,11 @@ public class Drive extends Subsystem implements Configurable<Drive.Config>, Tank
         poseEstimator.setKinematics(tankKinematics);
         this.leftMotor = config.leftMotor.create();
         this.rightMotor = config.rightMotor.create();
-        this.leftEncoder = config.leftEncoder.create();
-        this.rightEncoder = config.rightEncoder.create();
+
+        this.leftEncoder = new SRXEncoder((WPI_TalonSRX) leftMotor.getSpeedControllers()[0]);
+        this.rightEncoder = new SRXEncoder((WPI_TalonSRX) rightMotor.getSpeedControllers()[0]);
+        this.leftEncoder.configure(config.leftEncoder);
+        this.rightEncoder.configure(config.rightEncoder);
         this.straightMotionFollower.configure(config.straightMotionFollower);
         this.yawAngleController.configure(config.yawAngleController);
         this.leftController.configure(config.speedController);
@@ -437,8 +442,8 @@ public class Drive extends Subsystem implements Configurable<Drive.Config>, Tank
             SpeedController speedController = rightMotor.getSpeedControllers()[i];
             ((Sendable) speedController).setName("Drive", ("rightMotor(" + i + ")"));
         }
-        leftEncoder.setName("Drive", "leftEncoder");
-        rightEncoder.setName("Drive", "rightEncoder");
+        //leftEncoder.setName("Drive", "leftEncoder");
+        //rightEncoder.setName("Drive", "rightEncoder");
         gyro.setName("Drive", "gyro");
 
         poseEstimator.start();
@@ -450,8 +455,8 @@ public class Drive extends Subsystem implements Configurable<Drive.Config>, Tank
         this.config = null;
         SpeedControllerConfig.free(leftMotor);
         SpeedControllerConfig.free(rightMotor);
-        if (leftEncoder != null) leftEncoder.free();
-        if (rightEncoder != null) rightEncoder.free();
+        //if (leftEncoder != null) leftEncoder.free();
+        //if (rightEncoder != null) rightEncoder.free();
         if (gyro != null) gyro.free();
     }
 
@@ -469,8 +474,8 @@ public class Drive extends Subsystem implements Configurable<Drive.Config>, Tank
     public static class Config {
         public SpeedControllerGroupConfig leftMotor;
         public SpeedControllerGroupConfig rightMotor;
-        public EncoderConfig leftEncoder;
-        public EncoderConfig rightEncoder;
+        public SRXEncoder.Config leftEncoder;
+        public SRXEncoder.Config rightEncoder;
         public PidController.Config rotationController;
         public TrapezoidalProfileFollower.Config straightMotionFollower;
         public PidController.Config speedController;
