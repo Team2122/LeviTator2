@@ -1,9 +1,15 @@
 package org.teamtators.common.config.helpers;
 
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class TalonSRXConfig extends CtreMotorControllerConfig implements ConfigHelper<WPI_TalonSRX> {
     public static int REQUIRED_FIRMWARE = 0x0303; // TalonSRX firmware 3.3
+    public LimitSwitchSource forwardLimitSwitchSource = LimitSwitchSource.Deactivated;
+    public LimitSwitchSource reverseLimitSwitchSource = LimitSwitchSource.Deactivated;
+    public LimitSwitchNormal forwardLimitSwitchNormal = LimitSwitchNormal.Disabled;
+    public LimitSwitchNormal reverseLimitSwitchNormal = LimitSwitchNormal.Disabled;
 
     public WPI_TalonSRX create() {
         super.validate();
@@ -11,6 +17,10 @@ public class TalonSRXConfig extends CtreMotorControllerConfig implements ConfigH
         motor.enableCurrentLimit(false);
         super.configure(motor);
         super.checkVersion(motor, REQUIRED_FIRMWARE);
+        motor.configForwardLimitSwitchSource(forwardLimitSwitchSource, forwardLimitSwitchNormal, CONFIG_TIMEOUT);
+        motor.configReverseLimitSwitchSource(reverseLimitSwitchSource, reverseLimitSwitchNormal, CONFIG_TIMEOUT);
+        motor.configForwardSoftLimitEnable(false, CONFIG_TIMEOUT);
+        motor.configReverseSoftLimitEnable(false, CONFIG_TIMEOUT);
         return motor;
     }
 }

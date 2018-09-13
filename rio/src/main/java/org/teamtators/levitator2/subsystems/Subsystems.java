@@ -25,13 +25,17 @@ public class Subsystems extends SubsystemsBase
 
     private OperatorInterface oi;
     private Drive drive;
+    private Lift lift;
 
     public Subsystems() {
         oi = new OperatorInterface();
         drive = new Drive();
-        subsystems = Arrays.asList(oi, drive);
+        lift = new Lift();
+        subsystems = Arrays.asList(oi, drive, lift);
 
         updatables = new ArrayList<>();
+        //updatables.addAll(drive.getUpdatables());
+        //updatables.addAll(lift.getUpdatables());
         motorUpdatables = new ArrayList<>();
     }
 
@@ -81,6 +85,7 @@ public class Subsystems extends SubsystemsBase
     public void configure(Subsystems.Config config) {
         oi.configure(config.operatorInterface);
         drive.configure(config.drive);
+        lift.configure(config.lift);
     }
 
     public OperatorInterface getOperatorInterface() {
@@ -95,5 +100,6 @@ public class Subsystems extends SubsystemsBase
     public static class Config {
         public OperatorInterface.Config operatorInterface;
         public Drive.Config drive;
+        public Lift.Config lift;
     }
 }

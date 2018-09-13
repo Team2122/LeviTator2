@@ -65,11 +65,14 @@ drive:
       maxAcceleration: 100.0
 #      logData: true
   tankKinematics: { effectiveTrackWidth: 30.0 }
-#lift:
-#  maxHeight: 100.0
-#  changeProfileHeight: 100.0
-#  liftMotor:
-#    - { type: TALON_SRX, config: { id: 58, inverted: false, feedbackDevice: CTRE_MagEncoder_Relative } }
-#    - { type: VICTOR_SPX, config: { id: 59, inverted: false } }
-#    - { type: VICTOR_SPX, config: { id: 7, inverted: false } }
-#    - { type: VICTOR_SPX, config: { id: 0, inverted: false } } # are these right? we'll find out
+lift:
+  maxHeight: 100.0
+  changeProfileHeight: 100.0
+  liftMotor:
+    - { type: TALON_SRX, config: { id: 58, inverted: false, feedbackDevice: CTRE_MagEncoder_Relative,
+        forwardLimitSwitchSource: FeedbackConnector, reverseLimitSwitchSource: FeedbackConnector,
+        forwardLimitSwitchNormal: NormallyOpen, reverseLimitSwitchNormal: NormallyOpen } }
+    - { type: VICTOR_SPX, config: { id: 59, inverted: false } }
+    - { type: VICTOR_SPX, config: { id: 7, inverted: false } }
+    - { type: VICTOR_SPX, config: { id: 0, inverted: false } } # are these right? we'll find out
+  liftEncoder: { distancePerPulse: 1.0 }

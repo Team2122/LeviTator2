@@ -1,6 +1,7 @@
 package org.teamtators.levitator2.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.SpeedController;
 import org.teamtators.common.config.Configurable;
 import org.teamtators.common.config.Deconfigurable;
 import org.teamtators.common.config.helpers.SpeedControllerConfig;
@@ -84,7 +85,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         liftMaster = (WPI_TalonSRX) liftMotor.getSpeedControllers()[0];
         liftEncoder = new SRXEncoder(liftMaster);
         liftEncoder.configure(config.liftEncoder);
-        controller.configure(config.liftControllerLow);
+        //controller.configure(config.liftControllerLow);
         currentProfileLow = true;
         liftPowerUpdater = new MotorPowerUpdater(liftMotor);
         this.maxHeight = config.maxHeight;
@@ -104,10 +105,16 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         tests.addTest(new SpeedControllerTest("liftMotor", liftMotor));
         tests.addTest(new SRXEncoderTest("liftEncoder", liftEncoder));
 
+
+        for (int i = 0; i < liftMotor.getSpeedControllers().length; i++) {
+            SpeedController speedController = liftMotor.getSpeedControllers()[i];
+            tests.addTest(new SpeedControllerTest("liftMotor(" + i + ")", speedController));
+        }
+
         return tests;
     }
 
-    public class Config {
+    public static class Config {
         public double maxHeight;
         public double changeProfileHeight;
 
