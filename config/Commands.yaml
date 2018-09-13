@@ -1,1 +1,3 @@
-$Nothing:
+DriveTank:
+  maxAcceleration: 12.0 # units?
+  modifiers: { deadzone: 0.1, exponent: 2.0 }

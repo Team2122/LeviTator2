@@ -1,4 +1,4 @@
-defaults: []
+defaults: [ DriveTank ]
 
 driver:
   #A: start whenPressed $Nothing

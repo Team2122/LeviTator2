@@ -4,10 +4,12 @@ import org.slf4j.profiler.Profiler;
 import org.teamtators.common.SubsystemsBase;
 import org.teamtators.common.TatorRobotBase;
 import org.teamtators.common.config.ConfigCommandStore;
+import org.teamtators.levitator2.commands.CommandRegistrar;
 import org.teamtators.levitator2.subsystems.Subsystems;
 
 public class TatorRobot extends TatorRobotBase {
     private Subsystems subsystems;
+    private final CommandRegistrar registrar = new CommandRegistrar(this);
 
     public TatorRobot(String configDir) {
         super(configDir);
@@ -33,10 +35,15 @@ public class TatorRobot extends TatorRobotBase {
     @Override
     protected void registerCommands(ConfigCommandStore commandStore) {
         super.registerCommands(commandStore);
+        registrar.register(commandStore);
     }
 
     @Override
     public boolean hasProfiler() {
         return false;
+    }
+
+    public Subsystems getSubsystems() {
+        return subsystems;
     }
 }
