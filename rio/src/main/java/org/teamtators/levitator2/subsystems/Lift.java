@@ -22,14 +22,13 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     private SpeedControllerGroup liftMotor;
     private WPI_TalonSRX liftMaster;
     private SRXEncoder liftEncoder;
-    private double desiredHeight;
-    private double heightToMoveTo; // D:
-    private double maxHeight;
     private Config config;
-    private boolean currentProfileLow;
+    private Picker picker;
 
-    public Lift() {
+    public Lift(Picker picker) {
         super("Lift");
+
+        this.picker = picker;
 
         controller = new TrapezoidalProfileFollower("LiftController");
         controller.setPositionProvider(this::getCurrentHeight);
@@ -55,28 +54,9 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         move(dist);
     }
 
-    public void setDesiredHeight(double height) {
-        if (height <= maxHeight && height >= 0) {
-            this.desiredHeight = height;
-        }
-    }
 
     private void move(double dist) {
         controller.moveToPosition(dist);
-    }
-
-    public void checkProfiles() {
-        if (getCurrentHeight() >= config.changeProfileHeight && currentProfileLow) {
-            controller.stop();
-            controller.configure(config.liftControllerHigh);
-            currentProfileLow = false;
-            setTargetHeight(heightToMoveTo); //assume it's still safe, no reason why it shouldn't be
-        } else if (getCurrentHeight() < config.changeProfileHeight && !currentProfileLow) {
-            controller.stop();
-            controller.configure(config.liftControllerLow);
-            currentProfileLow = true;
-            setTargetHeight(heightToMoveTo); //assume it's still safe, no reason why it shouldn't be
-        }
     }
 
     @Override
@@ -85,10 +65,8 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         liftMaster = (WPI_TalonSRX) liftMotor.getSpeedControllers()[0];
         liftEncoder = new SRXEncoder(liftMaster);
         liftEncoder.configure(config.liftEncoder);
-        //controller.configure(config.liftControllerLow);
-        currentProfileLow = true;
-        liftPowerUpdater = new MotorPowerUpdater(liftMotor);
-        this.maxHeight = config.maxHeight;
+        controller.configure(config.liftController);
+        liftPowerUpdater = new MotorPowerUpdater(liftMaster);
 
         this.config = config;
     }
@@ -102,7 +80,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     @Override
     public ManualTestGroup createManualTests() {
         ManualTestGroup tests = super.createManualTests();
-        tests.addTest(new SpeedControllerTest("liftMotor", liftMotor));
+        tests.addTest(new SpeedControllerTest("liftMotor", liftMaster));
         tests.addTest(new SRXEncoderTest("liftEncoder", liftEncoder));
 
 
@@ -116,11 +94,9 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
 
     public static class Config {
         public double maxHeight;
-        public double changeProfileHeight;
 
         public SpeedControllerGroupConfig liftMotor;
         public SRXEncoder.Config liftEncoder;
-        public TrapezoidalProfileFollower.Config liftControllerLow;
-        public TrapezoidalProfileFollower.Config liftControllerHigh;
+        public TrapezoidalProfileFollower.Config liftController;
     }
 }

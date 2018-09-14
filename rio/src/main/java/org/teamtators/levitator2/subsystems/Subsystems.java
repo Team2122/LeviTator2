@@ -26,11 +26,12 @@ public class Subsystems extends SubsystemsBase
     private OperatorInterface oi;
     private Drive drive;
     private Lift lift;
+    private Picker picker;
 
     public Subsystems() {
         oi = new OperatorInterface();
         drive = new Drive();
-        lift = new Lift();
+        lift = new Lift(picker);
         subsystems = Arrays.asList(oi, drive, lift);
 
         updatables = new ArrayList<>();
@@ -94,6 +95,10 @@ public class Subsystems extends SubsystemsBase
 
     public Drive getDrive() {
         return drive;
+    }
+
+    public Picker getPicker() {
+        return picker;
     }
 
 
