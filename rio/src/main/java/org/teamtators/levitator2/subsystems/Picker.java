@@ -22,6 +22,7 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
     private Solenoid pickSolenoid;
     private Solenoid releaseSolenoid;
     private Solenoid deathGripSolenoid;
+    private CubeState state;
 
     private PidController pivotPositionController;
 
@@ -30,6 +31,16 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
         pivotPositionController = new PidController("pivotPositionController");
         pivotPositionController.setInputProvider(this::getCurrentAngle);
         pivotPositionController.setOutputConsumer(this::setPivotPower);
+        state = CubeState.SAFE;
+
+    }
+
+    public CubeState getCubeState(){
+        return state;
+    }
+
+    public void setCubeState(CubeState state){
+        this.state = state;
     }
 
     private void setPivotPower(double power) {
@@ -63,6 +74,11 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
         setLeftRollerPower(leftPow);
         setRightRollerPower(rightPow);
     }
+
+    public double getLaserDistance(){
+        return proximitySensor.getDistance();
+    }
+
 
     public void setLeftRollerPower(double pow) {
         leftRollers.set(pow);
@@ -122,4 +138,9 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
         public PidController.Config pivotPositionController;
     }
 
+    public enum CubeState{
+        SAFE,
+        BAD_PICK,
+        BAD_RELEASE
+    }
 }
