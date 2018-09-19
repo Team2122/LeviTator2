@@ -10,7 +10,6 @@ import org.teamtators.common.control.Updatable;
 import org.teamtators.common.controllers.Controller;
 import org.teamtators.common.controllers.LogitechF310;
 import org.teamtators.common.scheduler.Subsystem;
-import org.teamtators.levitator2.TatorRobot;
 
 import java.util.ArrayList;
 import java.util.Arrays;

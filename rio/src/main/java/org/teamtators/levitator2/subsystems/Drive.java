@@ -1,12 +1,10 @@
 package org.teamtators.levitator2.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedController;
 import org.teamtators.common.config.Configurable;
-import org.teamtators.common.config.helpers.EncoderConfig;
 import org.teamtators.common.config.helpers.SpeedControllerConfig;
 import org.teamtators.common.config.helpers.SpeedControllerGroupConfig;
 import org.teamtators.common.control.*;

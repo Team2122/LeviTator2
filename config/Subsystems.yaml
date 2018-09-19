@@ -92,4 +92,4 @@ pivot:
     P: 0.02
     I: 0
     D: 0
-    maxPower: 0.5
+    maxOutput: 0.5
