@@ -13,6 +13,7 @@ public class AnalogPotentiometer extends SensorBase implements Potentiometer, Se
     private double offset = DEFAULT_OFFSET;
     private double minValue = 0.0;
     private boolean continuous = DEFAULT_CONTINUOUS;
+    private boolean inverted = false;
 
     public AnalogPotentiometer(int channel) {
         analogInput = new AnalogInput(channel);
@@ -32,13 +33,18 @@ public class AnalogPotentiometer extends SensorBase implements Potentiometer, Se
     @Override
     public double get() {
         double p = analogInput.getAverageVoltage() / RobotController.getVoltage5V();
-        double value = p * fullRange + offset;
+        double value = p * fullRange;
+        double absFullRange = Math.abs(value);
+        if (inverted) {
+            value = fullRange - value;
+        }
+        value += offset;
         if (continuous) {
-            if (value < minValue) {
-                value += fullRange;
+            while (value < minValue) {
+                value += absFullRange;
             }
-            if (value > (minValue + fullRange)) {
-                value -= fullRange;
+            while (value > (minValue + fullRange)) {
+                value -= absFullRange;
             }
         }
         return value;
@@ -118,5 +124,9 @@ public class AnalogPotentiometer extends SensorBase implements Potentiometer, Se
         builder.setSmartDashboardType("Analog Input");
         builder.addDoubleProperty("Value", this::get, null);
         builder.addDoubleProperty("Offset", this::getOffset, this::setOffset);
+    }
+
+    public void setInverted(boolean inverted) {
+        this.inverted = inverted;
     }
 }

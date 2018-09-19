@@ -1,22 +1,27 @@
 package org.teamtators.levitator2.subsystems;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import org.teamtators.common.config.Configurable;
-import org.teamtators.common.config.helpers.AnalogPotentiometerConfig;
-import org.teamtators.common.config.helpers.DigitalSensorConfig;
-import org.teamtators.common.config.helpers.SpeedControllerConfig;
+import org.teamtators.common.config.helpers.*;
 import org.teamtators.common.control.PidController;
 import org.teamtators.common.hw.AnalogPotentiometer;
 import org.teamtators.common.hw.DigitalSensor;
+import org.teamtators.common.hw.DistanceLaser;
 import org.teamtators.common.scheduler.Subsystem;
+import org.teamtators.common.tester.ManualTestGroup;
+import org.teamtators.common.tester.components.*;
 
 public class Picker extends Subsystem implements Configurable<Picker.Config> {
     private SpeedController pivot;
     private SpeedController leftRollers;
     private SpeedController rightRollers;
     private DigitalSensor cubeSensor;
-    private DigitalSensor mandiblesClosed;
     private AnalogPotentiometer pivotPosition;
+    private DistanceLaser proximitySensor;
+    private Solenoid pickSolenoid;
+    private Solenoid releaseSolenoid;
+    private Solenoid deathGripSolenoid;
 
     private PidController pivotPositionController;
 
@@ -42,10 +47,6 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
 
     public void setMandibles(Position pos) {
 
-    }
-
-    public boolean isClosed() {
-        return mandiblesClosed.get();
     }
 
     public boolean isCubeDetected() {
@@ -82,19 +83,41 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
         this.leftRollers = config.leftRollers.create();
         this.rightRollers = config.rightRollers.create();
         this.cubeSensor = config.cubeSensor.create();
-        this.mandiblesClosed = config.mandiblesClosed.create();
         this.pivotPosition = config.pivotPosition.create();
         this.pivotPositionController.configure(config.pivotPositionController);
+        this.proximitySensor = config.proximitySensor.create();
+        this.pickSolenoid = config.pickSolenoid.create();
+        this.releaseSolenoid = config.releaseSolenoid.create();
+        this.deathGripSolenoid = config.deathGripSolenoid.create();
+
     }
 
+    @Override
+    public ManualTestGroup createManualTests() {
+        ManualTestGroup tests = super.createManualTests();
+        tests.addTest(new SpeedControllerTest("pivot", pivot));
+        tests.addTest(new AnalogPotentiometerTest("pivotPosition", pivotPosition));
+        tests.addTest(new SpeedControllerTest("rightRoller", rightRollers));
+        tests.addTest(new SpeedControllerTest("leftRoller", leftRollers));
+        tests.addTest(new DigitalSensorTest("cubeSensor", cubeSensor));
+        tests.addTest(new DistanceLaserTest("proximitySensor", proximitySensor));
+        tests.addTest(new SolenoidTest("pickSolenoid", pickSolenoid));
+        tests.addTest(new SolenoidTest("releaseSolenoid", releaseSolenoid));
+        tests.addTest(new SolenoidTest("deathGripSolenoid", deathGripSolenoid));
+        return tests;
+    }
 
-    public class Config {
+    public static class Config {
         public SpeedControllerConfig pivot;
         public SpeedControllerConfig leftRollers;
         public SpeedControllerConfig rightRollers;
         public DigitalSensorConfig cubeSensor;
-        public DigitalSensorConfig mandiblesClosed;
         public AnalogPotentiometerConfig pivotPosition;
+        public DistanceLaserConfig proximitySensor;
+
+        public SolenoidConfig pickSolenoid;
+        public SolenoidConfig releaseSolenoid;
+        public SolenoidConfig deathGripSolenoid;
 
         public PidController.Config pivotPositionController;
     }

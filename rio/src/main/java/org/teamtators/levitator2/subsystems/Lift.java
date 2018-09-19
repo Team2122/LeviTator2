@@ -1,9 +1,13 @@
 package org.teamtators.levitator2.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import org.teamtators.common.config.Configurable;
 import org.teamtators.common.config.Deconfigurable;
+import org.teamtators.common.config.helpers.DoubleSolenoidConfig;
+import org.teamtators.common.config.helpers.SolenoidConfig;
 import org.teamtators.common.config.helpers.SpeedControllerConfig;
 import org.teamtators.common.config.helpers.SpeedControllerGroupConfig;
 import org.teamtators.common.control.ControllerPredicates;
@@ -13,7 +17,9 @@ import org.teamtators.common.hw.SRXEncoder;
 import org.teamtators.common.hw.SpeedControllerGroup;
 import org.teamtators.common.scheduler.Subsystem;
 import org.teamtators.common.tester.ManualTestGroup;
+import org.teamtators.common.tester.components.DoubleSolenoidTest;
 import org.teamtators.common.tester.components.SRXEncoderTest;
+import org.teamtators.common.tester.components.SolenoidTest;
 import org.teamtators.common.tester.components.SpeedControllerTest;
 
 public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconfigurable {
@@ -24,6 +30,8 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     private SRXEncoder liftEncoder;
     private Config config;
     private Picker picker;
+    private DoubleSolenoid shifter;
+    private boolean gear;
 
     public Lift(Picker picker) {
         super("Lift");
@@ -67,6 +75,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         liftEncoder.configure(config.liftEncoder);
         controller.configure(config.liftController);
         liftPowerUpdater = new MotorPowerUpdater(liftMaster);
+        shifter = config.shifter.create();
 
         this.config = config;
     }
@@ -74,6 +83,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     public void deconfigure() {
         //liftEncoder.free();
         SpeedControllerConfig.free(liftMotor);
+        shifter.free();
         liftPowerUpdater = null;
     }
 
@@ -89,7 +99,18 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
             tests.addTest(new SpeedControllerTest("liftMotor(" + i + ")", speedController));
         }
 
+        tests.addTest(new DoubleSolenoidTest("shifter", shifter));
+
         return tests;
+    }
+
+    public void shift(boolean high) {
+        this.gear = high;
+        if(high) {
+            shifter.set(DoubleSolenoid.Value.kReverse);
+        } else {
+            shifter.set(DoubleSolenoid.Value.kForward);
+        }
     }
 
     public static class Config {
@@ -98,5 +119,6 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         public SpeedControllerGroupConfig liftMotor;
         public SRXEncoder.Config liftEncoder;
         public TrapezoidalProfileFollower.Config liftController;
+        public DoubleSolenoidConfig shifter;
     }
 }

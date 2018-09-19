@@ -10,6 +10,7 @@ public class AnalogPotentiometerConfig implements ConfigHelper<AnalogPotentiomet
     public boolean continuous = false;
     public int averageBits = 1;
     public int oversampleBits = 1;
+    public boolean inverted = false;
 
     public AnalogPotentiometer create() {
         AnalogPotentiometer pot = new AnalogPotentiometer(channel);
@@ -19,6 +20,7 @@ public class AnalogPotentiometerConfig implements ConfigHelper<AnalogPotentiomet
         pot.setContinuous(true);
         pot.setAverageBits(averageBits);
         pot.setOversampleBits(oversampleBits);
+        pot.setInverted(inverted);
         return pot;
     }
 }
