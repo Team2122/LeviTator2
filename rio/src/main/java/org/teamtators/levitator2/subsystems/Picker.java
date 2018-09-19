@@ -3,46 +3,31 @@ package org.teamtators.levitator2.subsystems;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import org.teamtators.common.config.Configurable;
-import org.teamtators.common.config.helpers.*;
-import org.teamtators.common.control.PidController;
-import org.teamtators.common.hw.AnalogPotentiometer;
+import org.teamtators.common.config.helpers.DigitalSensorConfig;
+import org.teamtators.common.config.helpers.DistanceLaserConfig;
+import org.teamtators.common.config.helpers.SolenoidConfig;
+import org.teamtators.common.config.helpers.SpeedControllerConfig;
 import org.teamtators.common.hw.DigitalSensor;
 import org.teamtators.common.hw.DistanceLaser;
 import org.teamtators.common.scheduler.Subsystem;
 import org.teamtators.common.tester.ManualTestGroup;
-import org.teamtators.common.tester.components.*;
+import org.teamtators.common.tester.components.DigitalSensorTest;
+import org.teamtators.common.tester.components.DistanceLaserTest;
+import org.teamtators.common.tester.components.SolenoidTest;
+import org.teamtators.common.tester.components.SpeedControllerTest;
 
 public class Picker extends Subsystem implements Configurable<Picker.Config> {
-    private SpeedController pivot;
     private SpeedController leftRollers;
     private SpeedController rightRollers;
     private DigitalSensor cubeSensor;
-    private AnalogPotentiometer pivotPosition;
     private DistanceLaser proximitySensor;
     private Solenoid pickSolenoid;
     private Solenoid releaseSolenoid;
     private Solenoid deathGripSolenoid;
 
-    private PidController pivotPositionController;
 
     public Picker() {
         super("Picker");
-        pivotPositionController = new PidController("pivotPositionController");
-        pivotPositionController.setInputProvider(this::getCurrentAngle);
-        pivotPositionController.setOutputConsumer(this::setPivotPower);
-    }
-
-    private void setPivotPower(double power) {
-        pivot.set(power);
-    }
-
-    public void moveToAngle(double angle) {
-        //todo safeties?
-        pivotPositionController.setSetpoint(angle);
-    }
-
-    public double getCurrentAngle() {
-        return -1.0;
     }
 
     public void setMandibles(Position pos) {
@@ -54,8 +39,6 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
     }
 
     public void stop() {
-        pivotPositionController.stop();
-        setPivotPower(0);
         setRollersPower(0, 0);
     }
 
@@ -79,12 +62,10 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
     }
 
     public void configure(Config config) {
-        this.pivot = config.pivot.create();
+
         this.leftRollers = config.leftRollers.create();
         this.rightRollers = config.rightRollers.create();
         this.cubeSensor = config.cubeSensor.create();
-        this.pivotPosition = config.pivotPosition.create();
-        this.pivotPositionController.configure(config.pivotPositionController);
         this.proximitySensor = config.proximitySensor.create();
         this.pickSolenoid = config.pickSolenoid.create();
         this.releaseSolenoid = config.releaseSolenoid.create();
@@ -95,8 +76,6 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
     @Override
     public ManualTestGroup createManualTests() {
         ManualTestGroup tests = super.createManualTests();
-        tests.addTest(new SpeedControllerTest("pivot", pivot));
-        tests.addTest(new AnalogPotentiometerTest("pivotPosition", pivotPosition));
         tests.addTest(new SpeedControllerTest("rightRoller", rightRollers));
         tests.addTest(new SpeedControllerTest("leftRoller", leftRollers));
         tests.addTest(new DigitalSensorTest("cubeSensor", cubeSensor));
@@ -108,18 +87,13 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
     }
 
     public static class Config {
-        public SpeedControllerConfig pivot;
         public SpeedControllerConfig leftRollers;
         public SpeedControllerConfig rightRollers;
         public DigitalSensorConfig cubeSensor;
-        public AnalogPotentiometerConfig pivotPosition;
         public DistanceLaserConfig proximitySensor;
-
         public SolenoidConfig pickSolenoid;
         public SolenoidConfig releaseSolenoid;
         public SolenoidConfig deathGripSolenoid;
-
-        public PidController.Config pivotPositionController;
     }
 
 }

@@ -78,13 +78,18 @@ lift:
   liftController: { }
   shifter: { forwardChannel: 4, reverseChannel: 5 }
 picker:
-  pivot: { type: VICTOR_SPX, config: { id: 59 }}
   leftRollers: { type: VICTOR_SPX, config: { id: 7, inverted: true } }
   rightRollers: { type: VICTOR_SPX, config: { id: 0, inverted: false } }
   cubeSensor: { channel: 0, type: NPN } #?
-  pivotPosition: { channel: 1, fullRange: 360, inverted: true, offset: -175 }
-  pivotPositionController: { }
   proximitySensor: { channel: 0, distance0V: 0, distance5V: 50 } #just guessing on distance
   pickSolenoid: { channel: 1 } #pick
   releaseSolenoid: { channel: 2 } #max release
   deathGripSolenoid: { channel: 0 }
+pivot:
+  motor: { type: VICTOR_SPX, config: { id: 59 } }
+  position: { channel: 1, fullRange: 360, inverted: true, offset: -308.7 }
+  pivotPositionController:
+    P: 0.02
+    I: 0
+    D: 0
+    maxPower: 0.5

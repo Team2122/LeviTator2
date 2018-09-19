@@ -2,16 +2,13 @@ package org.teamtators.levitator2.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import org.teamtators.common.config.Configurable;
 import org.teamtators.common.config.Deconfigurable;
 import org.teamtators.common.config.helpers.DoubleSolenoidConfig;
-import org.teamtators.common.config.helpers.SolenoidConfig;
 import org.teamtators.common.config.helpers.SpeedControllerConfig;
 import org.teamtators.common.config.helpers.SpeedControllerGroupConfig;
 import org.teamtators.common.control.ControllerPredicates;
-import org.teamtators.common.control.MotorPowerUpdater;
 import org.teamtators.common.control.TrapezoidalProfileFollower;
 import org.teamtators.common.hw.SRXEncoder;
 import org.teamtators.common.hw.SpeedControllerGroup;
@@ -19,12 +16,10 @@ import org.teamtators.common.scheduler.Subsystem;
 import org.teamtators.common.tester.ManualTestGroup;
 import org.teamtators.common.tester.components.DoubleSolenoidTest;
 import org.teamtators.common.tester.components.SRXEncoderTest;
-import org.teamtators.common.tester.components.SolenoidTest;
 import org.teamtators.common.tester.components.SpeedControllerTest;
 
 public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconfigurable {
     private TrapezoidalProfileFollower controller;
-    private MotorPowerUpdater liftPowerUpdater;
     private SpeedControllerGroup liftMotor;
     private WPI_TalonSRX liftMaster;
     private SRXEncoder liftEncoder;
@@ -46,7 +41,8 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     }
 
     private void setPower(double power) {
-        liftPowerUpdater.set(power);
+        //DANGER! Should be master when follower mode is enabled
+        liftMotor.set(power);
     }
 
     private double getCurrentVelocity() {
@@ -74,7 +70,6 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         liftEncoder = new SRXEncoder(liftMaster);
         liftEncoder.configure(config.liftEncoder);
         controller.configure(config.liftController);
-        liftPowerUpdater = new MotorPowerUpdater(liftMaster);
         shifter = config.shifter.create();
 
         this.config = config;
@@ -84,19 +79,33 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         //liftEncoder.free();
         SpeedControllerConfig.free(liftMotor);
         shifter.free();
-        liftPowerUpdater = null;
     }
 
     @Override
     public ManualTestGroup createManualTests() {
         ManualTestGroup tests = super.createManualTests();
-        tests.addTest(new SpeedControllerTest("liftMotor", liftMaster));
+        tests.addTest(new SpeedControllerTest("liftMotor", liftMotor));
         tests.addTest(new SRXEncoderTest("liftEncoder", liftEncoder));
 
 
         for (int i = 0; i < liftMotor.getSpeedControllers().length; i++) {
             SpeedController speedController = liftMotor.getSpeedControllers()[i];
-            tests.addTest(new SpeedControllerTest("liftMotor(" + i + ")", speedController));
+            tests.addTest(new SpeedControllerTest("liftMotor(" + i + ")", speedController)/* {
+                public ControlMode origMode;
+
+                @Override
+                public void start() {
+                    this.origMode = ((WPI_TalonSRX) this.motor).getControlMode();
+                    ((WPI_TalonSRX) this.motor).set(ControlMode.PercentOutput, 0);
+                    super.start();
+                }
+
+                @Override
+                public void stop() {
+                    super.stop();
+                    ((WPI_TalonSRX) this.motor).set(this.origMode, 0.0);
+                }
+            }*/);
         }
 
         tests.addTest(new DoubleSolenoidTest("shifter", shifter));
@@ -106,7 +115,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
 
     public void shift(boolean high) {
         this.gear = high;
-        if(high) {
+        if (high) {
             shifter.set(DoubleSolenoid.Value.kReverse);
         } else {
             shifter.set(DoubleSolenoid.Value.kForward);

@@ -27,13 +27,15 @@ public class Subsystems extends SubsystemsBase
     private Drive drive;
     private Lift lift;
     private Picker picker;
+    private Pivot pivot;
 
     public Subsystems() {
         oi = new OperatorInterface();
         drive = new Drive();
         picker = new Picker();
         lift = new Lift(picker);
-        subsystems = Arrays.asList(oi, drive, picker, lift);
+        pivot = new Pivot();
+        subsystems = Arrays.asList(oi, drive, picker, lift, pivot);
 
         updatables = new ArrayList<>();
         //updatables.addAll(drive.getUpdatables());
@@ -89,6 +91,7 @@ public class Subsystems extends SubsystemsBase
         drive.configure(config.drive);
         lift.configure(config.lift);
         picker.configure(config.picker);
+        pivot.configure(config.pivot);
     }
 
     public OperatorInterface getOperatorInterface() {
@@ -107,11 +110,16 @@ public class Subsystems extends SubsystemsBase
         return picker;
     }
 
+    public Pivot getPivot() {
+        return pivot;
+    }
+
 
     public static class Config {
         public OperatorInterface.Config operatorInterface;
         public Drive.Config drive;
         public Lift.Config lift;
         public Picker.Config picker;
+        public Pivot.Config pivot;
     }
 }

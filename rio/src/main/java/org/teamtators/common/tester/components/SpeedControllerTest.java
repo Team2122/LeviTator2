@@ -8,7 +8,7 @@ import org.teamtators.common.tester.ManualTest;
 
 public class SpeedControllerTest extends ManualTest {
 
-    private SpeedController motor;
+    protected SpeedController motor;
     private int fullspeed;
     private double axisValue;
     private PowerDistributionPanel pdp;
