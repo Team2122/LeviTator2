@@ -24,10 +24,21 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
     private Solenoid pickSolenoid;
     private Solenoid releaseSolenoid;
     private Solenoid deathGripSolenoid;
+    private CubeState state;
 
 
     public Picker() {
         super("Picker");
+        state = CubeState.SAFE;
+
+    }
+
+    public CubeState getCubeState(){
+        return state;
+    }
+
+    public void setCubeState(CubeState state){
+        this.state = state;
     }
 
     public void setMandibles(Position pos) {
@@ -46,6 +57,11 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
         setLeftRollerPower(leftPow);
         setRightRollerPower(rightPow);
     }
+
+    public double getLaserDistance(){
+        return proximitySensor.getDistance();
+    }
+
 
     public void setLeftRollerPower(double pow) {
         leftRollers.set(pow);
@@ -96,4 +112,9 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
         public SolenoidConfig deathGripSolenoid;
     }
 
+    public enum CubeState{
+        SAFE,
+        BAD_PICK,
+        BAD_RELEASE
+    }
 }
