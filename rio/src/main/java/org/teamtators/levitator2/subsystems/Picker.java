@@ -42,7 +42,20 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
     }
 
     public void setMandibles(Position pos) {
-
+        switch (pos) {
+            case Pick:
+                pickSolenoid.set(true);
+                releaseSolenoid.set(false);
+                break;
+            case Close:
+                pickSolenoid.set(false);
+                releaseSolenoid.set(false);
+                break;
+            case Drop:
+                pickSolenoid.set(false);
+                releaseSolenoid.set(true);
+                break;
+        }
     }
 
     public boolean isCubeDetected() {

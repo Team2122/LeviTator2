@@ -38,7 +38,7 @@ public class Subsystems extends SubsystemsBase
 
         updatables = new ArrayList<>();
         //updatables.addAll(drive.getUpdatables());
-        //updatables.addAll(lift.getUpdatables());
+        updatables.addAll(pivot.getUpdatables());
         motorUpdatables = new ArrayList<>();
     }
 

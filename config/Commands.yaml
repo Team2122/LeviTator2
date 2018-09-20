@@ -2,5 +2,14 @@ DriveTank:
   maxAcceleration: 12.0 # units?
   modifiers: { deadzone: 0.1, exponent: 2.0 }
 PickerPick:
-  rollerPower: -0.4
-  cubeDistance: 50 #just guessing
+  rollerPower: -0.8
+  cubeDetectDistance: 200
+  cubeInDistance: 50
+  cubeCloseDistance: 200
+  sampler: { period: .1 }
+  t1: .5
+  t2: .15
+  t3: .55
+PickerRelease:
+  rollerPower: 1.0
+  finishDistance: 350

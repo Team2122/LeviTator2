@@ -81,15 +81,15 @@ picker:
   leftRollers: { type: VICTOR_SPX, config: { id: 7, inverted: true } }
   rightRollers: { type: VICTOR_SPX, config: { id: 0, inverted: false } }
   cubeSensor: { channel: 0, type: NPN } #?
-  proximitySensor: { channel: 0, distance0V: 0, distance5V: 50 } #just guessing on distance
+  proximitySensor: { channel: 0, distance0V: 20, distance5V: 350 } #just guessing on distance
   pickSolenoid: { channel: 1 } #pick
   releaseSolenoid: { channel: 2 } #max release
   deathGripSolenoid: { channel: 0 }
 pivot:
   motor: { type: VICTOR_SPX, config: { id: 59 } }
-  position: { channel: 1, fullRange: 360, inverted: true, offset: -308.7 }
+  position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -309.0, minValue: -90.0 }
   pivotPositionController:
-    P: 0.02
+    P: 0.04
     I: 0
     D: 0
-    maxOutput: 0.5
+    maxOutput: 0.7

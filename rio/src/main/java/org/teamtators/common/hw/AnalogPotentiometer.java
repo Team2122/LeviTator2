@@ -33,11 +33,11 @@ public class AnalogPotentiometer extends SensorBase implements Potentiometer, Se
     @Override
     public double get() {
         double p = analogInput.getAverageVoltage() / RobotController.getVoltage5V();
-        double value = p * fullRange;
-        double absFullRange = Math.abs(value);
         if (inverted) {
-            value = fullRange - value;
+            p = 1 - p;
         }
+        double value = p * fullRange;
+        double absFullRange = Math.abs(fullRange);
         value += offset;
         if (continuous) {
             while (value < minValue) {

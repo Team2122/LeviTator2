@@ -3,3 +3,4 @@ defaults: [ DriveTank ]
 driver:
   #A: start whenPressed $Nothing
   B: toggle whenPressed PickerPick
+  A: toggle whenPressed PickerRelease

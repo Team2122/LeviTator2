@@ -16,9 +16,11 @@ public class CommandRegistrar {
         // Drive commands
         Drive drive = robot.getSubsystems().getDrive();
         commandStore.registerCommand("DriveTank", () -> new DriveTank(robot));
+        commandStore.registerCommand("DriveStraight", () -> new DriveStraight(robot));
 
         Picker picker = robot.getSubsystems().getPicker();
         commandStore.registerCommand("PickerPick", () -> new PickerPick(picker));
+        commandStore.registerCommand("PickerRelease", () -> new PickerRelease(picker));
 
     }
 

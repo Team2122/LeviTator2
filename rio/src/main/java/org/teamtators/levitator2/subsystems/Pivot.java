@@ -5,12 +5,17 @@ import org.teamtators.common.config.Configurable;
 import org.teamtators.common.config.helpers.AnalogPotentiometerConfig;
 import org.teamtators.common.config.helpers.SpeedControllerConfig;
 import org.teamtators.common.control.PidController;
+import org.teamtators.common.control.Updatable;
 import org.teamtators.common.hw.AnalogPotentiometer;
 import org.teamtators.common.scheduler.Subsystem;
 import org.teamtators.common.tester.ManualTestGroup;
 import org.teamtators.common.tester.components.AnalogPotentiometerTest;
 import org.teamtators.common.tester.components.ControllerTest;
 import org.teamtators.common.tester.components.SpeedControllerTest;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
     private SpeedController motor;
@@ -50,6 +55,10 @@ public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
         tests.addTest(new AnalogPotentiometerTest("position", position));
         tests.addTest(new ControllerTest(pivotPositionController, 0, 180));
         return tests;
+    }
+
+    public List<Updatable> getUpdatables() {
+        return Arrays.asList(pivotPositionController);
     }
 
     public static class Config {
