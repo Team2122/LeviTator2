@@ -121,7 +121,7 @@ public class PickerPick extends Command implements Configurable<PickerPick.Confi
             logger.warn("!!!!! WARNING: CUBE DETECTED BUT NOT IN PROPERLY!! RUN PICK AGAIN TO RESOLVE!! !!!!!");
             picker.setCubeState(Picker.CubeState.BAD_PICK);
         } else {
-            picker.setCubeState(Picker.CubeState.SAFE);
+            picker.setCubeState(interrupted ? Picker.CubeState.SAFE_NOCUBE : Picker.CubeState.SAFE_CUBE);
         }
     }
 

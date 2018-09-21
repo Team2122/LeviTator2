@@ -29,7 +29,7 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
 
     public Picker() {
         super("Picker");
-        state = CubeState.SAFE;
+        state = CubeState.SAFE_NOCUBE;
 
     }
 
@@ -126,7 +126,8 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
     }
 
     public enum CubeState {
-        SAFE,
+        SAFE_NOCUBE,
+        SAFE_CUBE,
         BAD_PICK,
         BAD_RELEASE
     }

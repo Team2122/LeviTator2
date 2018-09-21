@@ -5,11 +5,13 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SpeedController;
 import org.teamtators.common.config.Configurable;
+import org.teamtators.common.config.helpers.CtreMotorControllerGroupConfig;
 import org.teamtators.common.config.helpers.SpeedControllerConfig;
 import org.teamtators.common.config.helpers.SpeedControllerGroupConfig;
 import org.teamtators.common.control.*;
 import org.teamtators.common.drive.*;
 import org.teamtators.common.hw.ADXRS453;
+import org.teamtators.common.hw.CtreMotorControllerGroup;
 import org.teamtators.common.hw.SRXEncoder;
 import org.teamtators.common.hw.SpeedControllerGroup;
 import org.teamtators.common.math.Pose2d;
@@ -31,8 +33,8 @@ import java.util.function.Predicate;
 public class Drive extends Subsystem implements Configurable<Drive.Config>, TankDrive {
 
     public static final Predicate<TrapezoidalProfileFollower> DEFAULT_PREDICATE = ControllerPredicates.finished();
-    private SpeedControllerGroup leftMotor;
-    private SpeedControllerGroup rightMotor;
+    private CtreMotorControllerGroup leftMotor;
+    private CtreMotorControllerGroup rightMotor;
     private SRXEncoder rightEncoder;
     private SRXEncoder leftEncoder;
     private ADXRS453 gyro;
@@ -361,16 +363,9 @@ public class Drive extends Subsystem implements Configurable<Drive.Config>, Tank
 
         tests.addTests(new ADXRS453Test("gyro", gyro));
 
-        // TODO: make a SpeedControllerGroup tests so we no longer need this
-        for (int i = 0; i < leftMotor.getSpeedControllers().length; i++) {
-            SpeedController speedController = leftMotor.getSpeedControllers()[i];
-            tests.addTest(new SpeedControllerTest("leftMotor(" + i + ")", speedController));
-        }
+        tests.addTest(new CtreMotorControllerGroupTest("leftMotor", leftMotor));
+        tests.addTest(new CtreMotorControllerGroupTest("rightMotor", rightMotor));
 
-        for (int i = 0; i < rightMotor.getSpeedControllers().length; i++) {
-            SpeedController speedController = rightMotor.getSpeedControllers()[i];
-            tests.addTest(new SpeedControllerTest("rightMotor(" + i + ")", speedController));
-        }
         tests.addTests(new ControllerTest(rotationController, 180));
         tests.addTests(new ControllerTest(leftController, config.maxSpeed));
         tests.addTests(new ControllerTest(rightController, config.maxSpeed));
@@ -429,8 +424,8 @@ public class Drive extends Subsystem implements Configurable<Drive.Config>, Tank
         this.rotationController.configure(config.rotationController);
         gyro.start();
         gyro.startCalibration();
-
-        ((Sendable) leftMotor).setName("Drive", "leftMotor");
+        //todo fix
+        /*((Sendable) leftMotor).setName("Drive", "leftMotor");
         for (int i = 0; i < leftMotor.getSpeedControllers().length; i++) {
             SpeedController speedController = leftMotor.getSpeedControllers()[i];
             ((Sendable) speedController).setName("Drive", ("leftMotor(" + i + ")"));
@@ -439,7 +434,7 @@ public class Drive extends Subsystem implements Configurable<Drive.Config>, Tank
         for (int i = 0; i < rightMotor.getSpeedControllers().length; i++) {
             SpeedController speedController = rightMotor.getSpeedControllers()[i];
             ((Sendable) speedController).setName("Drive", ("rightMotor(" + i + ")"));
-        }
+        }*/
         //leftEncoder.setName("Drive", "leftEncoder");
         //rightEncoder.setName("Drive", "rightEncoder");
         gyro.setName("Drive", "gyro");
@@ -470,8 +465,8 @@ public class Drive extends Subsystem implements Configurable<Drive.Config>, Tank
     }
 
     public static class Config {
-        public SpeedControllerGroupConfig leftMotor;
-        public SpeedControllerGroupConfig rightMotor;
+        public CtreMotorControllerGroupConfig leftMotor;
+        public CtreMotorControllerGroupConfig rightMotor;
         public SRXEncoder.Config leftEncoder;
         public SRXEncoder.Config rightEncoder;
         public PidController.Config rotationController;

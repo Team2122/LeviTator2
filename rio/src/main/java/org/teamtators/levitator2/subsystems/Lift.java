@@ -5,23 +5,25 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import org.teamtators.common.config.Configurable;
 import org.teamtators.common.config.Deconfigurable;
+import org.teamtators.common.config.helpers.CtreMotorControllerGroupConfig;
 import org.teamtators.common.config.helpers.DoubleSolenoidConfig;
 import org.teamtators.common.config.helpers.SpeedControllerConfig;
 import org.teamtators.common.config.helpers.SpeedControllerGroupConfig;
 import org.teamtators.common.control.ControllerPredicates;
 import org.teamtators.common.control.TrapezoidalProfileFollower;
+import org.teamtators.common.hw.CtreMotorControllerGroup;
 import org.teamtators.common.hw.SRXEncoder;
 import org.teamtators.common.hw.SpeedControllerGroup;
 import org.teamtators.common.scheduler.Subsystem;
 import org.teamtators.common.tester.ManualTestGroup;
+import org.teamtators.common.tester.components.CtreMotorControllerGroupTest;
 import org.teamtators.common.tester.components.DoubleSolenoidTest;
 import org.teamtators.common.tester.components.SRXEncoderTest;
 import org.teamtators.common.tester.components.SpeedControllerTest;
 
 public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconfigurable {
     private TrapezoidalProfileFollower controller;
-    private SpeedControllerGroup liftMotor;
-    private WPI_TalonSRX liftMaster;
+    private CtreMotorControllerGroup liftMotor;
     private SRXEncoder liftEncoder;
     private Config config;
     private Picker picker;
@@ -66,8 +68,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     @Override
     public void configure(Config config) {
         liftMotor = config.liftMotor.create();
-        liftMaster = (WPI_TalonSRX) liftMotor.getSpeedControllers()[0];
-        liftEncoder = new SRXEncoder(liftMaster);
+        liftEncoder = new SRXEncoder(liftMotor.getMaster());
         liftEncoder.configure(config.liftEncoder);
         controller.configure(config.liftController);
         shifter = config.shifter.create();
@@ -84,32 +85,9 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     @Override
     public ManualTestGroup createManualTests() {
         ManualTestGroup tests = super.createManualTests();
-        tests.addTest(new SpeedControllerTest("liftMotor", liftMotor));
+        //tests.addTest(new SpeedControllerTest("liftMotor", liftMotor));
+        tests.addTest(new CtreMotorControllerGroupTest("liftMotor", liftMotor));
         tests.addTest(new SRXEncoderTest("liftEncoder", liftEncoder));
-
-
-        for (int i = 0; i < liftMotor.getSpeedControllers().length; i++) {
-            SpeedController speedController = liftMotor.getSpeedControllers()[i];
-            tests.addTest(new SpeedControllerTest("liftMotor(" + i + ")", speedController)/* {
-                public ControlMode origMode;
-
-                @Override
-                public void start() {
-                    this.origMode = ((WPI_TalonSRX) this.motor).getControlMode();
-                    ((WPI_TalonSRX) this.motor).set(ControlMode.PercentOutput, 0);
-                    super.start();
-                }
-
-                @Override
-                public void stop() {
-                    super.stop();
-                    ((WPI_TalonSRX) this.motor).set(this.origMode, 0.0);
-                }
-            }*/);
-        }
-
-        tests.addTest(new DoubleSolenoidTest("shifter", shifter));
-
         return tests;
     }
 
@@ -125,7 +103,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     public static class Config {
         public double maxHeight;
 
-        public SpeedControllerGroupConfig liftMotor;
+        public CtreMotorControllerGroupConfig liftMotor;
         public SRXEncoder.Config liftEncoder;
         public TrapezoidalProfileFollower.Config liftController;
         public DoubleSolenoidConfig shifter;
