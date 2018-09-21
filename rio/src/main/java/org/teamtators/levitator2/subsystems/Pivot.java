@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import org.teamtators.common.config.Configurable;
 import org.teamtators.common.config.helpers.AnalogPotentiometerConfig;
 import org.teamtators.common.config.helpers.SpeedControllerConfig;
+import org.teamtators.common.control.GravityCompensatedController;
 import org.teamtators.common.control.PidController;
 import org.teamtators.common.control.Updatable;
 import org.teamtators.common.hw.AnalogPotentiometer;
@@ -20,11 +21,11 @@ import java.util.List;
 public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
     private SpeedController motor;
     private AnalogPotentiometer position;
-    private PidController pivotPositionController;
+    private GravityCompensatedController pivotPositionController;
 
     public Pivot() {
         super("Pivot");
-        pivotPositionController = new PidController("pivotPositionController");
+        pivotPositionController = new GravityCompensatedController("pivotPositionController", this::getCurrentAngle);
         pivotPositionController.setInputProvider(this::getCurrentAngle);
         pivotPositionController.setOutputConsumer(this::setPower);
     }

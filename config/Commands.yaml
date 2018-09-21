@@ -12,4 +12,4 @@ PickerPick:
   t3: .55
 PickerRelease:
   rollerPower: 1.0
-  finishDistance: 350
+  time: 1.0

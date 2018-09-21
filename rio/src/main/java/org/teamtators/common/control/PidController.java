@@ -135,7 +135,7 @@ public class PidController extends AbstractController implements Configurable<Pi
 
     public static class Config extends AbstractController.Config {
         public double P = 0.0, I = 0.0, D = 0.0, F = 0.0;
-        public double maxIError = Double.POSITIVE_INFINITY, minISetpoint = 0.0;
+        public double maxIError = Double.POSITIVE_INFINITY, minISetpoint, gravityComp = 0.0;
     }
 
     @Override

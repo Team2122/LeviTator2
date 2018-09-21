@@ -356,9 +356,9 @@ public class Drive extends Subsystem implements Configurable<Drive.Config>, Tank
     public ManualTestGroup createManualTests() {
         ManualTestGroup tests = super.createManualTests();
 
-        tests.addTests(new SpeedControllerTest("LeftMotor", leftMotor));
+        //tests.addTests(new SpeedControllerTest("LeftMotor", leftMotor));
         tests.addTests(new SRXEncoderTest("LeftEncoder", leftEncoder));
-        tests.addTests(new SpeedControllerTest("RightMotor", rightMotor));
+        //tests.addTests(new SpeedControllerTest("RightMotor", rightMotor));
         tests.addTests(new SRXEncoderTest("RightEncoder", rightEncoder));
 
         tests.addTests(new ADXRS453Test("gyro", gyro));

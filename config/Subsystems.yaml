@@ -93,3 +93,4 @@ pivot:
     I: 0
     D: 0
     maxOutput: 0.7
+    gravityComp: 0.3
