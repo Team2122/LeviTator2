@@ -8,12 +8,13 @@ import org.teamtators.common.scheduler.RobotState;
 import org.teamtators.common.util.JoystickModifiers;
 import org.teamtators.levitator2.TatorRobot;
 import org.teamtators.levitator2.subsystems.Drive;
+import org.teamtators.levitator2.subsystems.Lift;
 import org.teamtators.levitator2.subsystems.OperatorInterface;
 
 public class DriveTank extends Command implements Configurable<DriveTank.Config> {
     private final Drive drive;
     private final OperatorInterface oi;
-//    private final Lift lift;
+    private final Lift lift;
 
     private JoystickModifiers modifiers;
     private Config config;
@@ -27,7 +28,7 @@ public class DriveTank extends Command implements Configurable<DriveTank.Config>
         super("DriveTank");
         drive = robot.getSubsystems().getDrive();
         oi = robot.getSubsystems().getOperatorInterface();
-//        lift = robot.getSubsystems().getLift();
+        lift = robot.getSubsystems().getLift();
         requires(drive);
         validIn(RobotState.TELEOP);
     }
@@ -43,7 +44,7 @@ public class DriveTank extends Command implements Configurable<DriveTank.Config>
         double left = oi.getDriveLeft();
         double right = oi.getDriveRight();
 
-        //double liftHeight = lift.getCurrentHeight();
+        double liftHeight = lift.getCurrentHeight();
         double scale = 1;
         double maxAcceleration;
 
@@ -70,6 +71,8 @@ public class DriveTank extends Command implements Configurable<DriveTank.Config>
     @Override
     public void configure(Config config) {
         this.config = config;
+        leftRamper.configure(config.leftRamper);
+        rightRamper.configure(config.rightRamper);
         leftRamper.setOnlyUp(false);
         rightRamper.setOnlyUp(false);
         this.modifiers = config.modifiers;
@@ -78,5 +81,7 @@ public class DriveTank extends Command implements Configurable<DriveTank.Config>
     public static class Config {
         public JoystickModifiers modifiers;
         public double maxAcceleration;
+        public Ramper.Config leftRamper;
+        public Ramper.Config rightRamper;
     }
 }

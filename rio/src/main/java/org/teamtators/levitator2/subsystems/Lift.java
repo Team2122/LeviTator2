@@ -51,7 +51,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         return liftEncoder.getVelocity();
     }
 
-    private double getCurrentHeight() {
+    public double getCurrentHeight() {
         return liftEncoder.getDistance();
     }
 

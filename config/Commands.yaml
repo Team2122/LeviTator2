@@ -1,5 +1,7 @@
 DriveTank:
   maxAcceleration: 12.0 # units?
+  leftRamper: { maxAcceleration: 12.0 }
+  rightRamper: { maxAcceleration: 12.0 }
   modifiers: { deadzone: 0.1, exponent: 2.0 }
 PickerPick:
   rollerPower: -0.8

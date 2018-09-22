@@ -7,14 +7,14 @@ drive:
     - { type: VICTOR_SPX, config: { id: 60, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 62, inverted: false } }
   #leftEncoder: { aChannel: 0, bChannel: 1, reverse: true, distancePerPulse: .0471238898}
-  leftEncoder: { distancePerPulse: 1.0 } #todo
+  leftEncoder: { distancePerPulse: .01544444444444 } #todo
   leftMotor:
     - { type: TALON_SRX, config: { id: 0, inverted: false, feedbackDevice: CTRE_MagEncoder_Relative } }
     - { type: VICTOR_SPX, config: { id: 3, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 4, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 1, inverted: false } }
   #rightEncoder: { aChannel: 2, bChannel: 3, reverse: false, distancePerPulse: .0471238898}
-  rightEncoder: { distancePerPulse: 1.0, inverted: true } #todo
+  rightEncoder: { distancePerPulse: .01544444444444, inverted: true } #todo
   rotationController:
       P: 0.05
       I: 0.0
