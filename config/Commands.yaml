@@ -12,6 +12,31 @@ PickerPick:
   t1: .5
   t2: .15
   t3: .55
+
+$PickerPick:
+  - PivotPick
+  - { class: Wait, period: 2.0 }
+  - PickerPick
+  - PivotHome
+$PickerPickTo45:
+  - PivotPick
+  - { class: Wait, period: 2.0 }
+  - PickerPick
+  - { class: PivotToAngle, angle: 135.0 }
 PickerRelease:
   rollerPower: 1.0
   time: 1.0
+PivotHome:
+  { class: PivotToAngle, angle: 0.0 }
+PivotPick:
+  { class: PivotToAngle, angle: 180.0 }
+PivotRelease:
+  { class: PivotToAngle, angle: 180.0 }
+LiftHome:
+  { class: LiftToHeight, height: 0.0 }
+LiftSwitch:
+  { class: LiftToHeight, height: 24.0 }
+LiftScaleLow:
+  { class: LiftToHeight, height: 60.0 }
+LiftScaleHigh:
+  { class: LiftToHeight, height: 80.0 }

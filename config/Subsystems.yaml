@@ -6,15 +6,15 @@ drive:
     - { type: VICTOR_SPX, config: { id: 61, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 60, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 62, inverted: false } }
-  #leftEncoder: { aChannel: 0, bChannel: 1, reverse: true, distancePerPulse: .0471238898}
-  leftEncoder: { distancePerPulse: .01544444444444 } #todo
+  #leftEncoder: { aChannel: 0, bChannel: 1, reverse: true, distancePerRotation: .0471238898}
+  leftEncoder: { distancePerRotation: 5.56 } #todo
   leftMotor:
     - { type: TALON_SRX, config: { id: 0, inverted: false, feedbackDevice: CTRE_MagEncoder_Relative } }
     - { type: VICTOR_SPX, config: { id: 3, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 4, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 1, inverted: false } }
-  #rightEncoder: { aChannel: 2, bChannel: 3, reverse: false, distancePerPulse: .0471238898}
-  rightEncoder: { distancePerPulse: .01544444444444, inverted: true } #todo
+  #rightEncoder: { aChannel: 2, bChannel: 3, reverse: false, distancePerRotation: .0471238898}
+  rightEncoder: { distancePerRotation: 5.56, inverted: true } #todo
   rotationController:
       P: 0.05
       I: 0.0
@@ -66,7 +66,7 @@ drive:
 #      logData: true
   tankKinematics: { effectiveTrackWidth: 30.0 }
 lift:
-  maxHeight: 100.0
+  maxHeight: 80.0
   liftMotor:
     - { type: TALON_SRX, config: { id: 58, inverted: false, feedbackDevice: CTRE_MagEncoder_Relative,
         forwardLimitSwitchSource: FeedbackConnector, reverseLimitSwitchSource: FeedbackConnector,
@@ -74,9 +74,22 @@ lift:
     - { type: VICTOR_SPX, config: { id: 5, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 2, inverted: true } }
     - { type: VICTOR_SPX, config: { id: 10, inverted: true } }
-  liftEncoder: { distancePerPulse: 1.0 }
-  liftController: { }
+  liftEncoder: { distancePerRotation: 14.127090301003344481605351170569 }
+  liftController:
+    kpP: 0.2
+    kiP: 0.0
+    kpV: 0.001
+    kfV: 0.009
+    kfA: 0.00089
+    kMinOutput: 0.0
+    kHoldPower: 0.047396935749274945
+    maxOutput: 0.4
+    minOutput: -0.2
+    logData: true
+    travelVelocity: 60.0
+    maxAcceleration: 80.0
   shifter: { forwardChannel: 4, reverseChannel: 5 }
+  maxBadPickHeight: 33.0
 picker:
   leftRollers: { type: VICTOR_SPX, config: { id: 7, inverted: true } }
   rightRollers: { type: VICTOR_SPX, config: { id: 0, inverted: false } }
@@ -87,10 +100,10 @@ picker:
   deathGripSolenoid: { channel: 0 }
 pivot:
   motor: { type: VICTOR_SPX, config: { id: 59 } }
-  position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -309.0, minValue: -90.0 }
+  position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -84.0, minValue: -90.0 }
   pivotPositionController:
     P: 0.04
     I: 0
     D: 0
-    maxOutput: 0.7
-    gravityComp: 0.3
+    maxOutput: 0.6
+    gravityComp: 0.0

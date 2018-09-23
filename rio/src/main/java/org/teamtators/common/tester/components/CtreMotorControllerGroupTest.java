@@ -3,15 +3,24 @@ package org.teamtators.common.tester.components;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import org.teamtators.common.controllers.LogitechF310;
+import org.teamtators.common.datalogging.DataCollector;
+import org.teamtators.common.datalogging.DataLoggable;
+import org.teamtators.common.datalogging.LogDataProvider;
 import org.teamtators.common.hw.CtreMotorControllerGroup;
 import org.teamtators.common.tester.ManualTest;
 
-public class CtreMotorControllerGroupTest extends ManualTest {
+import java.util.Arrays;
+import java.util.List;
+
+public class CtreMotorControllerGroupTest extends ManualTest implements DataLoggable {
 
     private final CtreMotorControllerGroup group;
     private BaseMotorController controller;
     private int selected = 0;
     private double axisValue;
+    private final DataCollector dataCollector = DataCollector.getDataCollector();
+    private LogDataProvider logDataProvider = new VelocityPowerLogProvider();
+    private boolean collecting = false;
 
     public CtreMotorControllerGroupTest(String name, CtreMotorControllerGroup group) {
         super(name);
@@ -20,7 +29,7 @@ public class CtreMotorControllerGroupTest extends ManualTest {
 
     @Override
     public void start() {
-        printTestInstructions("Press 'A' to cycle motor. Press 'B' to select all motors. Push joystick in direction to move (forward +, backward -)");
+        printTestInstructions("Press 'A' to cycle motor. Press 'B' to select all motors. Press 'X' to datalog. Push joystick in direction to move (forward +, backward -)");
         selected = 0;
         controller = group.getSpeedControllers()[selected];
         axisValue = 0;
@@ -46,6 +55,13 @@ public class CtreMotorControllerGroupTest extends ManualTest {
                 controller = group.getMaster();
                 printTestInfo("Selected master");
                 break;
+            case X:
+                if(collecting) {
+                    dataCollector.stopProvider(logDataProvider);
+                } else {
+                    dataCollector.startProvider(logDataProvider);
+                }
+                collecting = !collecting;
         }
     }
 
@@ -62,5 +78,28 @@ public class CtreMotorControllerGroupTest extends ManualTest {
     @Override
     public void updateAxis(double value) {
         axisValue = value;
+    }
+
+    @Override
+    public LogDataProvider getLogDataProvider() {
+        return logDataProvider;
+    }
+
+    private class VelocityPowerLogProvider implements LogDataProvider {
+
+        @Override
+        public String getName() {
+            return CtreMotorControllerGroupTest.this.getName();
+        }
+
+        @Override
+        public List<Object> getKeys() {
+            return Arrays.asList("output", "velocity");
+        }
+
+        @Override
+        public List<Object> getValues() {
+            return Arrays.asList(axisValue, group.getMaster().getSelectedSensorVelocity(0));
+        }
     }
 }

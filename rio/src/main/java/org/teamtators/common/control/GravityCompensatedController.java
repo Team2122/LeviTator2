@@ -13,11 +13,15 @@ public class GravityCompensatedController extends PidController {
     }
 
     public double computeFeedForward() {
-        double angle = this.angle.getAsDouble();
-        angle = 90 - angle;
-        double comp = config.gravityComp * Math.sin(angle);
-        logger.info("Power compensation: {}", comp);
-        return comp;
+        if(!isOnTarget() && false) {
+            double angle = this.angle.getAsDouble();
+            angle = 90 - angle;
+            double comp = config.gravityComp * -Math.sin(angle);
+            logger.info("Power compensation: {}", comp);
+            return comp;
+        } else {
+            return 0;
+        }
     }
 
     public void configure(PidController.Config config) {

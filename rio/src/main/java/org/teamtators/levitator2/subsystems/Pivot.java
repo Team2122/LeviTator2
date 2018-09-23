@@ -8,6 +8,7 @@ import org.teamtators.common.control.GravityCompensatedController;
 import org.teamtators.common.control.PidController;
 import org.teamtators.common.control.Updatable;
 import org.teamtators.common.hw.AnalogPotentiometer;
+import org.teamtators.common.scheduler.RobotState;
 import org.teamtators.common.scheduler.Subsystem;
 import org.teamtators.common.tester.ManualTestGroup;
 import org.teamtators.common.tester.components.AnalogPotentiometerTest;
@@ -48,6 +49,19 @@ public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
         this.motor = config.motor.create();
         this.position = config.position.create();
         this.pivotPositionController.configure(config.pivotPositionController);
+    }
+
+    @Override
+    public void onEnterRobotState(RobotState state) {
+        switch (state) {
+            case TELEOP:
+            case AUTONOMOUS:
+                pivotPositionController.start();
+                break;
+            case DISABLED:
+            case TEST:
+                pivotPositionController.stop();
+        }
     }
 
     public ManualTestGroup createManualTests() {

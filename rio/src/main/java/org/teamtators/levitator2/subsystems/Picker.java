@@ -39,6 +39,21 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
 
     public void setCubeState(CubeState state) {
         this.state = state;
+
+        switch (state) {
+            case BAD_PICK:
+                logger.warn("!!!!! WARNING CUBE DETECTED BUT NOT IN PROPERLY!! RUN PICK AGAIN TO RESOLVE!! !!!!!");
+                break;
+            case BAD_RELEASE:
+                logger.warn("!!!!! WARNING RELEASE INTERRUPTED!! RUN RELEASE AGAIN TO RESOLVE!! !!!!!");
+                break;
+            case SAFE_CUBE:
+                logger.info("Safety flag cleared. Cube in picker.");
+                break;
+            case SAFE_NOCUBE:
+                logger.info("Safety flag cleared. No cube in picker.");
+                break;
+        }
     }
 
     public void setMandibles(Position pos) {

@@ -31,6 +31,11 @@ public class PickerRelease extends Command implements Configurable<PickerRelease
     @Override
     protected void finish(boolean interrupted) {
         super.finish(interrupted);
+        if(interrupted) {
+            picker.setCubeState(Picker.CubeState.BAD_RELEASE);
+        } else {
+            picker.setCubeState(Picker.CubeState.SAFE_NOCUBE);
+        }
         picker.stop();
         timer.stop();
     }
