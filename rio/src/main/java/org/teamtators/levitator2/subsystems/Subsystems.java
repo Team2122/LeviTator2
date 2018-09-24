@@ -35,11 +35,7 @@ public class Subsystems extends SubsystemsBase
         lift = new Lift(picker);
         pivot = new Pivot();
         subsystems = Arrays.asList(oi, drive, picker, lift, pivot);
-
         updatables = new ArrayList<>();
-        //updatables.addAll(drive.getUpdatables());
-        updatables.addAll(pivot.getUpdatables());
-        updatables.addAll(lift.getUpdatables());
         motorUpdatables = new ArrayList<>();
     }
 
@@ -61,6 +57,11 @@ public class Subsystems extends SubsystemsBase
 
     @Override
     public List<Updatable> getUpdatables() {
+        if(updatables.isEmpty()) {
+            updatables.addAll(drive.getUpdatables());
+            updatables.addAll(pivot.getUpdatables());
+            updatables.addAll(lift.getUpdatables());
+        }
         return updatables;
     }
 

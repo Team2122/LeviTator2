@@ -7,50 +7,50 @@ drive:
     - { type: VICTOR_SPX, config: { id: 60, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 62, inverted: false } }
   #leftEncoder: { aChannel: 0, bChannel: 1, reverse: true, distancePerRotation: .0471238898}
-  leftEncoder: { distancePerRotation: 5.56 } #todo
+  leftEncoder: { distancePerRotation: 49.152 } #not really, just compensating for code error
   leftMotor:
     - { type: TALON_SRX, config: { id: 0, inverted: false, feedbackDevice: CTRE_MagEncoder_Relative } }
     - { type: VICTOR_SPX, config: { id: 3, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 4, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 1, inverted: false } }
   #rightEncoder: { aChannel: 2, bChannel: 3, reverse: false, distancePerRotation: .0471238898}
-  rightEncoder: { distancePerRotation: 5.56, inverted: true } #todo
+  rightEncoder: { distancePerRotation: 49.152 , inverted: true } #not really, just compensating for code error
   rotationController:
-      P: 0.05
+      P: 0.0
       I: 0.0
       D: 0.0
       maxAbsoluteOutput: 0.5
   speedController:
-      P: 0.015
+      P: 0.0
       I: 0.0
       D: 0.0
-      F: .0074
+      F: 0.0
 #      logData: true
   maxSpeed: 136
   straightMotionFollower:
-      kpP: 1.0
+      kpP: 0.1
       kiP: 0.0
-      kpV: 0.015
-      kfV: .0074
-      kMinOutput: .082
-      kfA: 0.004
+      kpV: 0.0025
+      kfV: .0035
+      kMinOutput: .02
+      kfA: 0.0004
       maxIError: 10.0
-#      logData: true
+      logData: true
   yawAngleController:
-      P: 0.1
+      P: 0.025
       I: 0.0
       D: -0.1
       maxIError: 12.0
-  #    logData: true
+      logData: true
   rotationMotionFollower:
-      kpP: 0.15
-      kiP: 0.5
-      kpV: 0.01
-      kfV: .01
-      kMinOutput: .1087
-      kfA: 0.0004
+      kpP: 0.0
+      kiP: 0.0
+      kpV: 0.003
+      kfV: 0.0014
+      kMinOutput: .015
+      kfA: 0.00014
       maxIError: 2.0
-  #    logData: true
+      logData: true
   driveSegmentsFollower:
     lookAhead: { minX: 9, minY: 9, maxX: 120, maxY: 18 }
     logData: true
@@ -76,7 +76,7 @@ lift:
     - { type: VICTOR_SPX, config: { id: 10, inverted: true } }
   liftEncoder: { distancePerRotation: 14.127090301003344481605351170569 }
   liftController:
-    kpP: 0.2
+    kpP: 0.15
     kiP: 0.0
     kpV: 0.001
     kfV: 0.009
@@ -85,7 +85,7 @@ lift:
     kHoldPower: 0.047396935749274945
     maxOutput: 0.4
     minOutput: -0.2
-    logData: true
+    logData: false
     travelVelocity: 60.0
     maxAcceleration: 80.0
   shifter: { forwardChannel: 4, reverseChannel: 5 }
@@ -100,7 +100,7 @@ picker:
   deathGripSolenoid: { channel: 0 }
 pivot:
   motor: { type: VICTOR_SPX, config: { id: 59 } }
-  position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -84.0, minValue: -90.0 }
+  position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -150.0, minValue: -90.0 }
   pivotPositionController:
     P: 0.04
     I: 0

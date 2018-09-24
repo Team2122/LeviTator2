@@ -3,6 +3,7 @@ package org.teamtators.levitator2.commands;
 import org.teamtators.common.config.Configurable;
 import org.teamtators.common.control.Ramper;
 import org.teamtators.common.control.Timer;
+import org.teamtators.common.controllers.LogitechF310;
 import org.teamtators.common.scheduler.Command;
 import org.teamtators.common.scheduler.RobotState;
 import org.teamtators.common.util.JoystickModifiers;
@@ -59,8 +60,9 @@ public class DriveTank extends Command implements Configurable<DriveTank.Config>
 
         double delta = timer.restart();
 
-        leftRamper.setValue(left);
-        rightRamper.setValue(right);
+        leftRamper.setValue(oi.getDriverJoystick().isButtonDown(LogitechF310.Button.TRIGGER_LEFT) ? 0.3 : left);
+        rightRamper.setValue(oi.getDriverJoystick().isButtonDown(LogitechF310.Button.TRIGGER_LEFT) ? -0.3 : right);
+        //logger.info("{}", drive.getYawRate());
         leftRamper.update(delta);
         rightRamper.update(delta);
 

@@ -19,7 +19,7 @@ public class SRXEncoder implements Configurable<SRXEncoder.Config>, Deconfigurab
     }
 
     public double getVelocity() {
-        return (inverted ? -1 : 1) * (motor.getSelectedSensorVelocity(0) / 4096.0) * distancePerRotation;
+        return 10 * (inverted ? -1 : 1) * (motor.getSelectedSensorVelocity(0) / 4096.0) * distancePerRotation;
     }
 
     public void configure(Config config) {

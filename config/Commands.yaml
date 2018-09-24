@@ -12,7 +12,7 @@ PickerPick:
   t1: .5
   t2: .15
   t3: .55
-
+^DriveRotate: { rotationSpeed: 180, maxAcceleration: 400 }
 $PickerPick:
   - PivotPick
   - { class: Wait, period: 2.0 }
@@ -35,8 +35,48 @@ PivotRelease:
 LiftHome:
   { class: LiftToHeight, height: 0.0 }
 LiftSwitch:
-  { class: LiftToHeight, height: 24.0 }
+  { class: LiftToHeight, height: 23.0 }
 LiftScaleLow:
   { class: LiftToHeight, height: 60.0 }
 LiftScaleHigh:
   { class: LiftToHeight, height: 80.0 }
+
+DriveStraightTest:
+  { class: DriveStraight, speed: 40.0, endSpeed: 0.0, maxAcceleration: 20.0, distance: 240.0}
+DriveRotateTest:
+  { class: DriveRotate, angle: 90.0 }
+
+
+$TestAuto:
+  - { class: DriveStraight, speed: 60.0, endSpeed: 0.0, angle: 0.0, maxAcceleration: 40.0, distance: 240.0 }
+  - { class: DriveRotate, angle: 180.0 }
+  - { class: DriveStraight, speed: 60.0, endSpeed: 0.0, angle: 180.0, maxAcceleration: 40.0, distance: 180.0 }
+  - { class: DriveRotate, angle: 90.0 }
+  - { class: DriveStraight, angle: 80.0, speed: 60.0, endSpeed: 0.0, maxAcceleration: 40.0, distance: 100.0 }
+
+$UpAndOut:
+  - LiftSwitch
+  - { class: Wait, period: 0.5 }
+  - PivotRelease
+
+$LiftHomeWithDelay:
+  - { class: Wait, period: 1 }
+  - LiftHome
+
+$CenterLSwitchAuto:
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, angle: 0.0, maxAcceleration: 60.0, distance: 24.0 }
+  - { class: DriveRotate, angle: -30.0 }
+  - { name: $UpAndOut, parallel: true }
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, distance: 76.0, maxAcceleration: 60.0 }
+  - { name: PickerRelease, parallel: true }
+  - { name: $LiftHomeWithDelay, parallel: true }
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, maxAcceleration: 60.0, distance: -76.0 }
+  - { class: DriveRotate, angle: 5.0, rotationSpeed: 270.0 }
+  - { name: PickerPick, parallel: true }
+  - { class: DriveStraight, speed: 40.0, endSpeed: 0.0, maxAcceleration: 60.0, distance: 42.0 }
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, maxAcceleration: 60.0, distance: -42.0 }
+  - { class: DriveRotate, angle: -35.0 }
+  - LiftSwitch
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, distance: 76.0, maxAcceleration: 60.0 }
+  - PickerRelease
+
