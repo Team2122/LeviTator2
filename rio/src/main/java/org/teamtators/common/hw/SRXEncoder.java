@@ -1,10 +1,13 @@
 package org.teamtators.common.hw;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.teamtators.common.config.Configurable;
 import org.teamtators.common.config.Deconfigurable;
 
 public class SRXEncoder implements Configurable<SRXEncoder.Config>, Deconfigurable {
+    private Logger logger = LoggerFactory.getLogger(getClass());
     private WPI_TalonSRX motor;
     private double distancePerRotation;
     private boolean inverted;
@@ -12,6 +15,14 @@ public class SRXEncoder implements Configurable<SRXEncoder.Config>, Deconfigurab
     public SRXEncoder(WPI_TalonSRX motor) {
         this.motor = motor;
         reset(); //SRX encoder values persist between code restarts - we have to manually reset this here.
+        testHealth();
+    }
+
+    private void testHealth() {
+        int us = motor.getSensorCollection().getPulseWidthRiseToRiseUs();
+        if(us == 0) {
+            logger.error("Sensor on a TalonSRX [canid = {}] not plugged in.", motor.getDeviceID());
+        }
     }
 
     public double getDistance() {
@@ -38,6 +49,10 @@ public class SRXEncoder implements Configurable<SRXEncoder.Config>, Deconfigurab
 
     public int get() {
         return motor.getSelectedSensorPosition(0);
+    }
+
+    public WPI_TalonSRX getMotor() {
+        return motor;
     }
 
     public static class Config {
