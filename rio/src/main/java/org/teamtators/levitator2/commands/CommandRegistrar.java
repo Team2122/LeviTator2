@@ -23,7 +23,7 @@ public class CommandRegistrar {
 
         Picker picker = robot.getSubsystems().getPicker();
         commandStore.registerCommand("PickerPick", () -> new PickerPick(picker));
-        commandStore.registerCommand("PickerRelease", () -> new PickerRelease(picker));
+        commandStore.registerCommand("PickerRelease", () -> new PickerRelease(robot));
 
         Pivot pivot = robot.getSubsystems().getPivot();
         commandStore.registerCommand("PivotToAngle", () -> new PivotToAngle(pivot));

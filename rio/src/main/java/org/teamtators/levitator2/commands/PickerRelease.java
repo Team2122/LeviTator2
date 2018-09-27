@@ -3,29 +3,39 @@ package org.teamtators.levitator2.commands;
 import org.teamtators.common.config.Configurable;
 import org.teamtators.common.control.Timer;
 import org.teamtators.common.scheduler.Command;
+import org.teamtators.levitator2.TatorRobot;
+import org.teamtators.levitator2.subsystems.Lift;
 import org.teamtators.levitator2.subsystems.Picker;
 
 public class PickerRelease extends Command implements Configurable<PickerRelease.Config> {
     private Picker picker;
     private Config config;
     private Timer timer;
+    private Lift lift;
+    private boolean safeToRelease;
 
-    public PickerRelease(Picker picker) {
+    public PickerRelease(TatorRobot robot) {
         super("PickerRelease");
-        this.picker = picker;
+        safeToRelease = true;
+        this.picker = robot.getSubsystems().getPicker();
+        this.lift = robot.getSubsystems().getLift();
         timer = new Timer();
     }
 
     @Override
     protected void initialize() {
         super.initialize();
-        picker.setRollersPower(config.rollerPower, config.rollerPower);
-        timer.start();
+        if(lift.safeToReleaseCube()) {
+            picker.setRollersPower(config.rollerPower, config.rollerPower);
+            timer.start();
+        } else {
+            safeToRelease = false;
+        }
     }
 
     @Override
     public boolean step() {
-        return timer.hasPeriodElapsed(config.time);
+        return timer.hasPeriodElapsed(config.time) || !safeToRelease;
     }
 
     @Override

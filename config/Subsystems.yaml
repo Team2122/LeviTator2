@@ -90,6 +90,8 @@ lift:
     maxAcceleration: 80.0
   shifter: { forwardChannel: 4, reverseChannel: 5 }
   maxBadPickHeight: 33.0
+  minUnsafeReleaseHeight: 0.0
+  maxUnsafeReleaseHeight: 0.0
 picker:
   leftRollers: { type: VICTOR_SPX, config: { id: 7, inverted: true } }
   rightRollers: { type: VICTOR_SPX, config: { id: 0, inverted: false } }
