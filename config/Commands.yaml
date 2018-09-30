@@ -13,6 +13,7 @@ PickerPick:
   t2: .15
   t3: .55
 ^DriveRotate: { rotationSpeed: 180, maxAcceleration: 400 }
+^DrivePath: { speed: 100, arcSpeed: 60, radius: 30, maxAcceleration: 120 }
 $PickerPick:
   - PivotPick
   - { class: Wait, period: 2.0 }
@@ -80,3 +81,23 @@ $CenterLSwitchAuto:
   - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, distance: 76.0, maxAcceleration: 60.0 }
   - PickerRelease
 
+$LogAuto:
+  - { class: Log, message: "Log auto successful" }
+
+StartLeftPose:
+  - class: SetPose
+    x: -100
+    y: 19
+    yaw: -90
+
+$TestDrive:
+  - StartLeftPose
+  - class: DrivePath
+    reverse: true
+    speed: 120
+    parallel: true
+    path:
+      - { x: -100, y: 19, speed: 120 }
+      - { x: -100, y: 264, speed: 120 }
+  - { class: WaitForPath, remainingDistance: 4.0 }
+  - PrintPose

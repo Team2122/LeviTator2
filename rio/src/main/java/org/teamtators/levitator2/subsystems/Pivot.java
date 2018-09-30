@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import org.teamtators.common.config.Configurable;
 import org.teamtators.common.config.helpers.AnalogPotentiometerConfig;
 import org.teamtators.common.config.helpers.SpeedControllerConfig;
+import org.teamtators.common.control.ControllerPredicates;
 import org.teamtators.common.control.GravityCompensatedController;
 import org.teamtators.common.control.PidController;
 import org.teamtators.common.control.Updatable;
@@ -29,6 +30,7 @@ public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
         pivotPositionController = new GravityCompensatedController("pivotPositionController", this::getCurrentAngle);
         pivotPositionController.setInputProvider(this::getCurrentAngle);
         pivotPositionController.setOutputConsumer(this::setPower);
+        pivotPositionController.setTargetPredicate(ControllerPredicates.withinError(5));
     }
 
     private void setPower(double power) {
@@ -53,6 +55,7 @@ public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
 
     @Override
     public void onEnterRobotState(RobotState state) {
+        super.onEnterRobotState(state);
         switch (state) {
             case TELEOP:
             case AUTONOMOUS:

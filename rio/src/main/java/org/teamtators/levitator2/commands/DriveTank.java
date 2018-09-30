@@ -60,8 +60,8 @@ public class DriveTank extends Command implements Configurable<DriveTank.Config>
 
         double delta = timer.restart();
 
-        leftRamper.setValue(oi.getDriverJoystick().isButtonDown(LogitechF310.Button.TRIGGER_LEFT) ? 0.3 : left);
-        rightRamper.setValue(oi.getDriverJoystick().isButtonDown(LogitechF310.Button.TRIGGER_LEFT) ? -0.3 : right);
+        leftRamper.setValue(left);
+        rightRamper.setValue(right);
         //logger.info("{}", drive.getYawRate());
         leftRamper.update(delta);
         rightRamper.update(delta);

@@ -15,7 +15,7 @@ public class SRXEncoder implements Configurable<SRXEncoder.Config>, Deconfigurab
     public SRXEncoder(WPI_TalonSRX motor) {
         this.motor = motor;
         reset(); //SRX encoder values persist between code restarts - we have to manually reset this here.
-        testHealth();
+        //testHealth(); should work but doesn't.
     }
 
     private void testHealth() {

@@ -5,6 +5,7 @@ import org.teamtators.common.SubsystemsBase;
 import org.teamtators.common.TatorRobotBase;
 import org.teamtators.common.config.ConfigCommandStore;
 import org.teamtators.common.scheduler.Command;
+import org.teamtators.common.scheduler.RobotState;
 import org.teamtators.levitator2.commands.CommandRegistrar;
 import org.teamtators.levitator2.subsystems.Subsystems;
 
@@ -50,6 +51,11 @@ public class TatorRobot extends TatorRobotBase {
 
     @Override
     protected Command getAutoCommand() {
-        return getCommandStore().getCommand("$CenterLSwitchAuto");
+        return getCommandStore().getCommand("$LogAuto");
+    }
+
+    @Override
+    public void onEnterRobotState(RobotState state) {
+        super.onEnterRobotState(state);
     }
 }

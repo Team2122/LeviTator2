@@ -1,6 +1,8 @@
 package org.teamtators.levitator2.commands;
 
+import org.teamtators.common.TatorRobotBase;
 import org.teamtators.common.config.ConfigCommandStore;
+import org.teamtators.common.scheduler.Commands;
 import org.teamtators.levitator2.TatorRobot;
 import org.teamtators.levitator2.subsystems.Drive;
 import org.teamtators.levitator2.subsystems.Lift;
@@ -20,6 +22,11 @@ public class CommandRegistrar {
         commandStore.registerCommand("DriveTank", () -> new DriveTank(robot));
         commandStore.registerCommand("DriveStraight", () -> new DriveStraight(robot));
         commandStore.registerCommand("DriveRotate", () -> new DriveRotate(robot));
+        commandStore.registerCommand("DrivePath", () -> new DrivePathCommand(robot));
+        commandStore.putCommand("PrintPose", Commands.instant(() ->
+                TatorRobotBase.logger.info("Pose: " + drive.getPose())));
+        commandStore.registerCommand("SetPose", () -> new SetPose(robot));
+        commandStore.registerCommand("WaitForPath", () -> new WaitForPath(robot));
 
         Picker picker = robot.getSubsystems().getPicker();
         commandStore.registerCommand("PickerPick", () -> new PickerPick(picker));
