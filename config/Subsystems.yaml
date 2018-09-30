@@ -103,6 +103,7 @@ picker:
 pivot:
   motor: { type: VICTOR_SPX, config: { id: 59 } }
   position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -150.0, minValue: -90.0 }
+  pressureSensor: {channel: 100, supplyVoltage: 5.0}
   pivotPositionController:
     P: 0.04
     I: 0
