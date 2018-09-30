@@ -12,11 +12,9 @@ public class PickerRelease extends Command implements Configurable<PickerRelease
     private Config config;
     private Timer timer;
     private Lift lift;
-    private boolean safeToRelease;
 
     public PickerRelease(TatorRobot robot) {
         super("PickerRelease");
-        safeToRelease = true;
         this.picker = robot.getSubsystems().getPicker();
         this.lift = robot.getSubsystems().getLift();
         timer = new Timer();
@@ -29,13 +27,13 @@ public class PickerRelease extends Command implements Configurable<PickerRelease
             picker.setRollersPower(config.rollerPower, config.rollerPower);
             timer.start();
         } else {
-            safeToRelease = false;
+           cancel();
         }
     }
 
     @Override
     public boolean step() {
-        return timer.hasPeriodElapsed(config.time) || !safeToRelease;
+        return timer.hasPeriodElapsed(config.time);
     }
 
     @Override
