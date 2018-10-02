@@ -2,14 +2,14 @@ operatorInterface:
   driverJoystick: { port: 0 }
 drive:
   rightMotor:
-    - { type: TALON_SRX, config: { id: 9, inverted: false, feedbackDevice: CTRE_MagEncoder_Relative } }
+    - { type: TALON_SRX, config: { id: 9, inverted: false, feedbackDevice: CTRE_MagEncoder_Relative, limitCurrent: true, continuousCurrentLimit: 30 } }
     - { type: VICTOR_SPX, config: { id: 61, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 60, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 62, inverted: false } }
   #leftEncoder: { aChannel: 0, bChannel: 1, reverse: true, distancePerRotation: .0471238898}
   leftEncoder: { distancePerRotation: 49.152 } #not really, just compensating for code error
   leftMotor:
-    - { type: TALON_SRX, config: { id: 0, inverted: false, feedbackDevice: CTRE_MagEncoder_Relative } }
+    - { type: TALON_SRX, config: { id: 0, inverted: false, feedbackDevice: CTRE_MagEncoder_Relative, limitCurrent: true, continuousCurrentLimit: 30 } }
     - { type: VICTOR_SPX, config: { id: 3, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 4, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 1, inverted: false } }
@@ -37,7 +37,7 @@ drive:
       maxIError: 10.0
       logData: true
   yawAngleController:
-      P: 0.025
+      P: 0.012
       I: 0.0
       D: -0.1
       maxIError: 12.0
@@ -55,16 +55,14 @@ drive:
     lookAhead: { minX: 9, minY: 9, maxX: 120, maxY: 18 }
     logData: true
     speedFollower:
-      kpP: 2.0
+      kpP: 1.5
       kiP: 0.0
       kpV: 0.0
       kfV: 1.0
       kMinOutput: 0.0
       kfA: 0.05
       maxIError: 10.0
-      maxAcceleration: 40.0
-      maxOutput: 40
-      minOutput: -40
+      maxAcceleration: 100.0
       logData: true
   tankKinematics: { effectiveTrackWidth: 27.25 }
 lift:
@@ -85,9 +83,9 @@ lift:
     kfA: 0.00089
     kMinOutput: 0.0
     kHoldPower: 0.047396935749274945
-    maxOutput: 0.4
-    minOutput: -0.2
-    logData: false
+    maxOutput: 0.6
+    minOutput: -0.25
+    logData: true
     travelVelocity: 60.0
     maxAcceleration: 80.0
   shifter: { forwardChannel: 4, reverseChannel: 5 }
@@ -107,6 +105,6 @@ pivot:
     P: 0.04
     I: 0.00
     D: 0.00
-    maxOutput: 0.8
+    maxOutput: 1.0
     gravityComp: 0.0
-    logData: true
+#    logData: true

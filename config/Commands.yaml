@@ -16,7 +16,7 @@ PickerPick:
 ^DrivePath: { speed: 100, arcSpeed: 60, radius: 30, maxAcceleration: 120 }
 $PickerPick:
   - PivotPick
-  - { class: Wait, period: 2.0 }
+  - { class: Wait, period: 1.7 }
   - PickerPick
   - PivotHome
 $PickerPickTo45:
@@ -24,9 +24,24 @@ $PickerPickTo45:
   - { class: Wait, period: 2.0 }
   - PickerPick
   - { class: PivotToAngle, angle: 135.0 }
+^PickerRelease:
+  time: 1.0
+  minDropAngle: 160.0
+  drop: false
 PickerRelease:
   rollerPower: 1.0
   time: 1.0
+  drop: false
+PivotFlip:
+  forwardAngle: 180.0
+  pivotPoint: 90.0
+  backwardAngle: 0.0
+$PickerRelease:
+  - PickerRelease
+  - PivotHome
+$PickerDrop:
+  - { class: PickerRelease, rollerPower: 0.2, time: 1.0, drop: true }
+  - PivotHome
 PivotHome:
   { class: PivotToAngle, angle: 0.0 }
 PivotPick:
@@ -38,7 +53,7 @@ LiftHome:
 LiftSwitch:
   { class: LiftToHeight, height: 23.0 }
 LiftScaleLow:
-  { class: LiftToHeight, height: 60.0 }
+  { class: LiftToHeight, height: 66.0 }
 LiftScaleHigh:
   { class: LiftToHeight, height: 80.0 }
 
@@ -85,10 +100,10 @@ $LogAuto:
   - { class: Log, message: "Log auto successful" }
 
 StartLeftPose:
-  - class: SetPose
-    x: -100
-    y: 19
-    yaw: -90
+  class: SetPose
+  x: -100
+  y: 19
+  yaw: -90
 
 $TestDrive:
   - StartLeftPose
@@ -96,8 +111,10 @@ $TestDrive:
     reverse: true
     speed: 120
     parallel: true
+    maxAcceleration: 60.0
     path:
-      - { x: -100, y: 19, speed: 120 }
-      - { x: -100, y: 264, speed: 120 }
+      - { x: -100, y: 19, speed: 40 }
+      - { x: -100, y: 162, speed: 40, arcSpeed: 40, radius: 48 }
+      - { x: -88, y: 268, speed: 40 }
   - { class: WaitForPath, remainingDistance: 4.0 }
   - PrintPose

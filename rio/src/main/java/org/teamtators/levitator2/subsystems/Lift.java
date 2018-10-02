@@ -44,11 +44,14 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         controller.setPositionProvider(this::getCurrentHeight);
         controller.setVelocityProvider(this::getCurrentVelocity);
         controller.setOutputConsumer(this::setPower);
-        controller.setOnTargetPredicate(ControllerPredicates.alwaysFalse());
+        controller.setOnTargetPredicate((follower) -> {
+                    return desiredHeight == 0 && (getCurrentHeight() <= 2.0);
+                }
+        );
+        //controller.setOnTargetPredicate(ControllerPredicates.alwaysFalse());
     }
 
     private void setPower(double power) {
-        //DANGER! Should be master when follower mode is enabled
         liftMotor.set(power);
     }
 
@@ -76,8 +79,10 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     }
 
     public void setTargetHeight(double height) {
+        this.desiredHeight = height;
         double dist = height - getCurrentHeight();
         move(dist);
+        enableLiftController();
     }
 
     public void setDesiredHeight(double height) {
@@ -157,14 +162,17 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
 
     private class LiftTest extends ManualTest {
         private double axisValue;
+
         public LiftTest() {
             super("LiftTest");
         }
+
         @Override
         public void start() {
             logger.info("Press A to set lift target to joystick value. Hold Y to enable lift profiler");
             disableLiftController();
         }
+
         @Override
         public void onButtonDown(LogitechF310.Button button) {
             switch (button) {
@@ -178,6 +186,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
                     break;
             }
         }
+
         @Override
         public void onButtonUp(LogitechF310.Button button) {
             switch (button) {
@@ -186,10 +195,12 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
                     break;
             }
         }
+
         @Override
         public void updateAxis(double value) {
             this.axisValue = value;
         }
+
         @Override
         public void stop() {
             disableLiftController();

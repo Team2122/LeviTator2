@@ -5,11 +5,15 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class TalonSRXConfig extends CtreMotorControllerConfig implements ConfigHelper<WPI_TalonSRX> {
-    public static int REQUIRED_FIRMWARE = 0x0303; // TalonSRX firmware 3.3
+    public static int REQUIRED_FIRMWARE = 0x0308; // TalonSRX firmware 3.8
     public LimitSwitchSource forwardLimitSwitchSource = LimitSwitchSource.Deactivated;
     public LimitSwitchSource reverseLimitSwitchSource = LimitSwitchSource.Deactivated;
     public LimitSwitchNormal forwardLimitSwitchNormal = LimitSwitchNormal.Disabled;
     public LimitSwitchNormal reverseLimitSwitchNormal = LimitSwitchNormal.Disabled;
+    public boolean limitCurrent = false;
+    public int continuousCurrentLimit = 0;
+    public int peakCurrentLimit = 0;
+    public int peakCurrentDurationMillis = 0;
 
     public WPI_TalonSRX create() {
         super.validate();
@@ -21,6 +25,11 @@ public class TalonSRXConfig extends CtreMotorControllerConfig implements ConfigH
         motor.configReverseLimitSwitchSource(reverseLimitSwitchSource, reverseLimitSwitchNormal, CONFIG_TIMEOUT);
         motor.configForwardSoftLimitEnable(false, CONFIG_TIMEOUT);
         motor.configReverseSoftLimitEnable(false, CONFIG_TIMEOUT);
+        motor.configContinuousCurrentLimit(continuousCurrentLimit, CONFIG_TIMEOUT);
+        motor.configPeakCurrentLimit(peakCurrentLimit, CONFIG_TIMEOUT);
+        motor.configPeakCurrentDuration(peakCurrentDurationMillis, CONFIG_TIMEOUT);
+        motor.enableCurrentLimit(limitCurrent);
+
         return motor;
     }
 }

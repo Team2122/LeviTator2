@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.Timer;
 
 public class VictorSPXConfig extends CtreMotorControllerConfig implements ConfigHelper<WPI_VictorSPX> {
-    public static int REQUIRED_FIRMWARE = 0x0301; // VictorSPX firmware 3.1
+    public static int REQUIRED_FIRMWARE = 0x0308; // VictorSPX firmware 3.8
 
     public WPI_VictorSPX create() {
         super.validate();

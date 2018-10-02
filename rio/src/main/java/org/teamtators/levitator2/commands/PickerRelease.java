@@ -3,16 +3,21 @@ package org.teamtators.levitator2.commands;
 import org.teamtators.common.config.Configurable;
 import org.teamtators.common.control.Timer;
 import org.teamtators.common.scheduler.Command;
+import org.teamtators.levitator2.TatorRobot;
 import org.teamtators.levitator2.subsystems.Picker;
+import org.teamtators.levitator2.subsystems.Pivot;
 
 public class PickerRelease extends Command implements Configurable<PickerRelease.Config> {
+    private final Pivot pivot;
     private Picker picker;
     private Config config;
     private Timer timer;
 
-    public PickerRelease(Picker picker) {
+    public PickerRelease(TatorRobot robot) {
         super("PickerRelease");
-        this.picker = picker;
+        this.picker = robot.getSubsystems().getPicker();
+        this.pivot = robot.getSubsystems().getPivot();
+        requires(picker);
         timer = new Timer();
     }
 
@@ -20,6 +25,9 @@ public class PickerRelease extends Command implements Configurable<PickerRelease
     protected void initialize() {
         super.initialize();
         picker.setRollersPower(config.rollerPower, config.rollerPower);
+        if(config.drop && pivot.getCurrentAngle() > config.minDropAngle) {
+            picker.setMandibles(Picker.Position.Drop);
+        }
         timer.start();
     }
 
@@ -36,6 +44,7 @@ public class PickerRelease extends Command implements Configurable<PickerRelease
         } else {
             picker.setCubeState(Picker.CubeState.SAFE_NOCUBE);
         }
+        picker.setMandibles(Picker.Position.Close);
         picker.stop();
         timer.stop();
     }
@@ -46,7 +55,8 @@ public class PickerRelease extends Command implements Configurable<PickerRelease
 
     public static class Config {
         public double time;
-        public double unsafeDistance;
         public double rollerPower;
+        public boolean drop;
+        public double minDropAngle;
     }
 }

@@ -141,9 +141,18 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
     }
 
     public enum CubeState {
-        SAFE_NOCUBE,
-        SAFE_CUBE,
-        BAD_PICK,
-        BAD_RELEASE
+        SAFE_NOCUBE(false),
+        SAFE_CUBE(true),
+        BAD_PICK(false),
+        BAD_RELEASE(false);
+        private final boolean cube;
+
+        private CubeState(boolean cube) {
+            this.cube = cube;
+        }
+
+        public boolean hasCube() {
+            return cube;
+        }
     }
 }

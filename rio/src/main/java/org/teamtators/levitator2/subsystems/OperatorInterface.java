@@ -21,12 +21,15 @@ public class OperatorInterface extends Subsystem implements Configurable<Operato
     }
 
     // For tank drive
+
+    //notice: mitch likes inverted sticks
     public double getDriveLeft() {
-        return -driverJoystick.getAxisValue(LogitechF310.Axis.LEFT_STICK_Y);
+        return driverJoystick.getAxisValue(LogitechF310.Axis.RIGHT_STICK_Y);
     }
 
+    //notice: mitch likes inverted sticks
     public double getDriveRight() {
-        return -driverJoystick.getAxisValue(LogitechF310.Axis.RIGHT_STICK_Y);
+        return driverJoystick.getAxisValue(LogitechF310.Axis.LEFT_STICK_Y);
     }
 
     @Override

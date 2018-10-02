@@ -22,12 +22,17 @@ public class PickerPick extends Command implements Configurable<PickerPick.Confi
     public PickerPick(Picker picker) {
         super("PickerPick");
         this.picker = picker;
+        requires(picker);
         validIn(RobotState.TELEOP);
     }
 
     @Override
     protected void initialize() {
         super.initialize();
+        if(picker.getCubeState().hasCube()) {
+            this.cancel();
+            return;
+        }
         picker.setMandibles(Picker.Position.Pick);
         picker.setRollersPower(config.rollerPower, config.rollerPower);
         state = State.Waiting;
