@@ -201,7 +201,7 @@ public abstract class AbstractController extends AbstractUpdatable implements Da
             running = true;
 //            reset();
             if (dataLog) {
-                dataCollector.startProvider(logDataProvider);
+                dataCollector.startProvider(getLogDataProvider());
             }
         }
     }
@@ -212,7 +212,7 @@ public abstract class AbstractController extends AbstractUpdatable implements Da
             running = false;
             if (outputConsumer != null)
                 outputConsumer.controllerWrite(0.0);
-            dataCollector.stopProvider(logDataProvider);
+            dataCollector.stopProvider(getLogDataProvider());
         }
     }
 

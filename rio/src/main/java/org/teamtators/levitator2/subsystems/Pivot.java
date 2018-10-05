@@ -30,7 +30,7 @@ public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
         pivotPositionController = new GravityCompensatedController("pivotPositionController", this::getCurrentAngle);
         pivotPositionController.setInputProvider(this::getCurrentAngle);
         pivotPositionController.setOutputConsumer(this::setPower);
-        pivotPositionController.setTargetPredicate(ControllerPredicates.withinError(5));
+        pivotPositionController.setTargetPredicate(ControllerPredicates.withinError(2));
     }
 
     private void setPower(double power) {
@@ -82,6 +82,6 @@ public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
     public static class Config {
         public SpeedControllerConfig motor;
         public AnalogPotentiometerConfig position;
-        public PidController.Config pivotPositionController;
+        public GravityCompensatedController.Config pivotPositionController;
     }
 }

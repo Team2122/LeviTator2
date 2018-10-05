@@ -1,17 +1,15 @@
 defaults: [ DriveTank ]
 
 driver:
-  #A: start whenPressed $Nothing
   TRIGGER_RIGHT: toggle whenPressed $PickerPick
   TRIGGER_LEFT: toggle whenPressed $PickerRelease
   BUMPER_LEFT: start whenPressed LiftHome
-  BUMPER_RIGHT: start whenPressed LiftScaleLow
+  BUMPER_RIGHT: start whenPressed LiftSwitch
   POV_UP: start whenPressed PivotRelease
   POV_LEFT: start whenPressed PivotPick
   POV_DOWN: start whenPressed PivotHome
-#  POV_RIGHT: start whenPressed $CenterLSwitchAuto
 #  START: start whenPressed $TestDrive
-  B: start whenPressed LiftScaleHigh
+  B: start whenPressed $LiftScaleHighTele
   A: start whenPressed $PickerDrop
   X: start whenPressed LiftSwitch
   STICK_RIGHT: start whenPressed PivotFlip

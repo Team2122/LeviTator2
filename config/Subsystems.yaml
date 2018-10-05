@@ -99,12 +99,9 @@ picker:
   releaseSolenoid: { channel: 2 } #max release
   deathGripSolenoid: { channel: 0 }
 pivot:
-  motor: { type: VICTOR_SPX, config: { id: 59, inverted: true } }
-  position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -154.0, minValue: -90.0 }
+  motor: { type: VICTOR_SPX, config: { id: 59, inverted: false } }
+  position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -157.3, minValue: -90.0 }
   pivotPositionController:
-    P: 0.04
-    I: 0.00
-    D: 0.00
-    maxOutput: 1.0
-    gravityComp: 0.0
-#    logData: true
+    kComp: 0.6
+    kMin: 0.6
+    logData: true
