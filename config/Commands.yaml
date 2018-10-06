@@ -1,7 +1,11 @@
 DriveTank:
-  maxAcceleration: 12.0 # units?
-  leftRamper: { maxAcceleration: 12.0 }
-  rightRamper: { maxAcceleration: 12.0 }
+  slowHeight: 40
+  slowScaler: 0.5
+  maxAcceleration: 12.0
+  maxAccelerationSlow: 2.0
+  slowerHeight: 60
+  slowerScaler: 0.3
+  maxAccelerationSlower: 1.0
   modifiers: { deadzone: 0.1, exponent: 2.0 }
 PickerPick:
   rollerPower: -0.8
@@ -53,7 +57,7 @@ LiftHome:
 LiftSwitch:
   { class: LiftToHeight, height: 23.0 }
 LiftScaleLow:
-  { class: LiftToHeight, height: 66.0 }
+  { class: LiftToHeight, height: 64.0 }
 LiftScaleHigh:
   { class: LiftToHeight, height: 80.0 }
 
@@ -126,3 +130,7 @@ $TestDrive:
       - { x: -88, y: 268 }
   - { class: WaitForPath, remainingDistance: 4.0 }
   - PrintPose
+
+LiftClimb:
+  power: -1
+  time: 1

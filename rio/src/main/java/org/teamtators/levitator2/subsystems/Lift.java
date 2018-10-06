@@ -32,7 +32,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     private Config config;
     private Picker picker;
     private DoubleSolenoid shifter;
-    private boolean gear;
+    private Position gear;
     private double desiredHeight;
 
     public Lift(Picker picker) {
@@ -51,7 +51,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         //controller.setOnTargetPredicate(ControllerPredicates.alwaysFalse());
     }
 
-    private void setPower(double power) {
+    public void setPower(double power) {
         liftMotor.set(power);
     }
 
@@ -119,6 +119,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
             case TELEOP:
             case AUTONOMOUS:
                 enableLiftController();
+                shift(Position.HIGH);
                 break;
             case TEST:
             case DISABLED:
@@ -132,17 +133,34 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         ManualTestGroup tests = super.createManualTests();
         tests.addTest(new CtreMotorControllerGroupTest("liftMotor", liftMotor));
         tests.addTest(new SRXEncoderTest("liftEncoder", liftEncoder));
+        tests.addTest(new DoubleSolenoidTest("liftShifter", shifter));
         tests.addTest(new LiftTest());
         return tests;
     }
 
-    public void shift(boolean high) {
-        this.gear = high;
-        if (high) {
-            shifter.set(DoubleSolenoid.Value.kReverse);
-        } else {
-            shifter.set(DoubleSolenoid.Value.kForward);
+    public void shift(Position pos) {
+        this.gear = pos;
+        switch (pos) {
+            case HIGH:
+                shifter.set(DoubleSolenoid.Value.kReverse);
+                break;
+            case LOW:
+                shifter.set(DoubleSolenoid.Value.kForward);
+                break;
         }
+    }
+
+    public enum Position {
+        HIGH,
+        LOW
+    }
+
+    public void disable() {
+        controller.stop();
+    }
+
+    public void enable() {
+        controller.start();
     }
 
     public List<Updatable> getUpdatables() {

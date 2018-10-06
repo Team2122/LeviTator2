@@ -1,5 +1,11 @@
 operatorInterface:
   driverJoystick: { port: 0 }
+  gunnerJoystick: { port: 1 }
+  gunnerSecondary: { port: 2 }
+  slider: { port: 3 }
+  knobRange: 90
+  knobDeadzone: 7
+  sliderFunction: { minX: -1, minY: 0, maxX: 1, maxY: 85 }
 drive:
   rightMotor:
     - { type: TALON_SRX, config: { id: 9, inverted: false, feedbackDevice: CTRE_MagEncoder_Relative, limitCurrent: true, continuousCurrentLimit: 30 } }
@@ -83,8 +89,8 @@ lift:
     kfA: 0.00089
     kMinOutput: 0.0
     kHoldPower: 0.047396935749274945
-    maxOutput: 0.6
-    minOutput: -0.25
+    maxOutput: 0.8
+    minOutput: -0.3
     logData: true
     travelVelocity: 60.0
     maxAcceleration: 80.0
@@ -100,7 +106,7 @@ picker:
   deathGripSolenoid: { channel: 0 }
 pivot:
   motor: { type: VICTOR_SPX, config: { id: 59, inverted: false } }
-  position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -157.3, minValue: -90.0 }
+  position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -158.5, minValue: -90.0 }
   pivotPositionController:
     kComp: 0.6
     kMin: 0.6

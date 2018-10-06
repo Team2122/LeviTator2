@@ -38,6 +38,7 @@ public class CommandRegistrar {
 
         Lift lift = robot.getSubsystems().getLift();
         commandStore.registerCommand("LiftToHeight", () -> new LiftToHeight(lift));
+        commandStore.registerCommand("LiftClimb", () -> new LiftClimb(robot));
 
     }
 

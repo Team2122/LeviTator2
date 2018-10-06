@@ -13,3 +13,10 @@ driver:
   A: start whenPressed $PickerDrop
   X: start whenPressed LiftSwitch
   STICK_RIGHT: start whenPressed PivotFlip
+  START: whilePressed LiftClimb
+gunner:
+  RIGHT_THUMB: start whenPressed LiftSwitch
+  RIGHT_INDEX: start whenPressed $LiftScaleLowTele
+  RIGHT_MIDDLE: start whenPressed $LiftScaleHighTele
+gunnerSecondary:
+  12: start whenPressed LiftHome

@@ -49,7 +49,15 @@ public class DriveTank extends Command implements Configurable<DriveTank.Config>
         double scale = 1;
         double maxAcceleration;
 
-        maxAcceleration = config.maxAcceleration;
+        if (liftHeight > config.slowerHeight) {
+            scale = config.slowerScaler;
+            maxAcceleration = config.maxAccelerationSlower;
+        } else if (liftHeight > config.slowHeight) {
+            scale = config.slowScaler;
+            maxAcceleration = config.maxAccelerationSlow;
+        } else {
+            maxAcceleration = config.maxAcceleration;
+        }
 
         leftRamper.setMaxAcceleration(maxAcceleration);
         rightRamper.setMaxAcceleration(maxAcceleration);
@@ -73,8 +81,6 @@ public class DriveTank extends Command implements Configurable<DriveTank.Config>
     @Override
     public void configure(Config config) {
         this.config = config;
-        leftRamper.configure(config.leftRamper);
-        rightRamper.configure(config.rightRamper);
         leftRamper.setOnlyUp(false);
         rightRamper.setOnlyUp(false);
         this.modifiers = config.modifiers;
@@ -83,7 +89,11 @@ public class DriveTank extends Command implements Configurable<DriveTank.Config>
     public static class Config {
         public JoystickModifiers modifiers;
         public double maxAcceleration;
-        public Ramper.Config leftRamper;
-        public Ramper.Config rightRamper;
+        public double slowHeight;
+        public double slowScaler;
+        public double maxAccelerationSlow;
+        public double slowerHeight;
+        public double slowerScaler;
+        public double maxAccelerationSlower;
     }
 }
