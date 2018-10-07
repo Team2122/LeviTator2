@@ -116,3 +116,6 @@ pivot:
     kMin: 0.6
     logData: true
   dangerPressure: 40
+climber:
+  forkSolenoid: { channel: 4 }
+  hookSolenoid: { channel: 3 }
