@@ -1,4 +1,4 @@
-defaults: [ DriveTank ]
+defaults: [ DriveTank, LiftContinuous ]
 
 driver:
   TRIGGER_RIGHT: toggle whenPressed $PickerPick
@@ -15,8 +15,10 @@ driver:
   STICK_RIGHT: start whenPressed PivotFlip
   START: whilePressed LiftClimb
 gunner:
-  RIGHT_THUMB: start whenPressed LiftSwitch
-  RIGHT_INDEX: start whenPressed $LiftScaleLowTele
-  RIGHT_MIDDLE: start whenPressed $LiftScaleHighTele
+  RIGHT_THUMB: start whenPressed LiftHome
+  RIGHT_INDEX: start whenPressed LiftSwitch
+  RIGHT_MIDDLE: start whenPressed $LiftScaleLowTele
+  RIGHT_RING: start whenPressed $LiftScaleHighTele
 gunnerSecondary:
-  12: start whenPressed LiftHome
+  11: start whenPressed LiftForClimb
+  12: start whenPressed LiftRecall

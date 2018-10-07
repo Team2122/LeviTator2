@@ -23,7 +23,7 @@ public class LiftToHeight extends Command implements Configurable<LiftToHeight.C
         super.initialize();
         logger.info("Moving to {}", config.height);
         //lift.setDesiredHeight(config.height);
-        lift.setTargetHeight(config.height);
+        lift.setTargetHeight(config.height, true);
     }
 
     @Override

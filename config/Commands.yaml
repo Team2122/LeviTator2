@@ -7,6 +7,9 @@ DriveTank:
   slowerScaler: 0.3
   maxAccelerationSlower: 1.0
   modifiers: { deadzone: 0.1, exponent: 2.0 }
+LiftContinuous:
+  sliderTolerance: 2
+  sliderThreshold: 1
 PickerPick:
   rollerPower: -0.8
   cubeDetectDistance: 200
@@ -60,6 +63,8 @@ LiftScaleLow:
   { class: LiftToHeight, height: 64.0 }
 LiftScaleHigh:
   { class: LiftToHeight, height: 80.0 }
+LiftForClimb:
+  { class: LiftToHeight, height: 72.0 }
 
 $LiftScaleLowTele:
   - PivotRelease

@@ -16,6 +16,7 @@ import org.teamtators.common.scheduler.Subsystem;
 import org.teamtators.common.tester.ManualTestGroup;
 import org.teamtators.common.tester.components.AnalogPotentiometerTest;
 import org.teamtators.common.tester.components.ControllerTest;
+import org.teamtators.common.tester.components.PressureSensorTest;
 import org.teamtators.common.tester.components.SpeedControllerTest;
 
 import java.util.Arrays;
@@ -42,7 +43,7 @@ public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
     }
 
     public void moveToAngle(double angle) {
-        if(pressureSensor.getPressure() < config.dangerPressure){
+        if(pressureSensor.getPressure() > config.dangerPressure){
 
             //todo safeties?
             pivotPositionController.setSetpoint(angle);
@@ -82,6 +83,7 @@ public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
         tests.addTest(new SpeedControllerTest("motor", motor));
         tests.addTest(new AnalogPotentiometerTest("position", position));
         tests.addTest(new ControllerTest(pivotPositionController, 0, 180));
+        tests.addTest(new PressureSensorTest("pivotPressure", pressureSensor));
         return tests;
     }
 

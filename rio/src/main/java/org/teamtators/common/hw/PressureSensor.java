@@ -18,7 +18,6 @@ public class PressureSensor {
 
     /**
      *
-     * @param pressureSensor the input that represents the pressureSensor
      * @param supplyVoltage the supply voltage in VDC
      */
     public PressureSensor(int channel, double supplyVoltage) {

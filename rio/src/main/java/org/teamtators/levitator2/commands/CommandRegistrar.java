@@ -37,8 +37,10 @@ public class CommandRegistrar {
         commandStore.registerCommand("PivotFlip", () -> new PivotFlip(pivot));
 
         Lift lift = robot.getSubsystems().getLift();
+        commandStore.registerCommand("LiftContinuous", () -> new LiftContinuous(robot));
         commandStore.registerCommand("LiftToHeight", () -> new LiftToHeight(lift));
         commandStore.registerCommand("LiftClimb", () -> new LiftClimb(robot));
+        commandStore.putCommand("LiftRecall", new LiftRecall(robot));
 
     }
 

@@ -1,21 +1,16 @@
 package org.teamtators.levitator2.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.SpeedController;
 import org.teamtators.common.config.Configurable;
 import org.teamtators.common.config.Deconfigurable;
 import org.teamtators.common.config.helpers.CtreMotorControllerGroupConfig;
 import org.teamtators.common.config.helpers.DoubleSolenoidConfig;
 import org.teamtators.common.config.helpers.SpeedControllerConfig;
-import org.teamtators.common.config.helpers.SpeedControllerGroupConfig;
-import org.teamtators.common.control.ControllerPredicates;
 import org.teamtators.common.control.TrapezoidalProfileFollower;
 import org.teamtators.common.control.Updatable;
 import org.teamtators.common.controllers.LogitechF310;
 import org.teamtators.common.hw.CtreMotorControllerGroup;
 import org.teamtators.common.hw.SRXEncoder;
-import org.teamtators.common.hw.SpeedControllerGroup;
 import org.teamtators.common.scheduler.RobotState;
 import org.teamtators.common.scheduler.Subsystem;
 import org.teamtators.common.tester.ManualTest;
@@ -33,7 +28,8 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     private Picker picker;
     private DoubleSolenoid shifter;
     private Position gear;
-    private double desiredHeight;
+    private double targetHeight;
+    private boolean forced = true;
 
     public Lift(Picker picker) {
         super("Lift");
@@ -45,7 +41,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         controller.setVelocityProvider(this::getCurrentVelocity);
         controller.setOutputConsumer(this::setPower);
         controller.setOnTargetPredicate((follower) -> {
-                    return desiredHeight == 0 && (getCurrentHeight() <= 2.0);
+                    return targetHeight == 0 && (getCurrentHeight() <= 2.0);
                 }
         );
         //controller.setOnTargetPredicate(ControllerPredicates.alwaysFalse());
@@ -82,21 +78,18 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         return config.minUnsafeReleaseHeight > getCurrentHeight() || config.maxUnsafeReleaseHeight < getCurrentHeight();
     }
 
-    public void setTargetHeight(double height) {
-        this.desiredHeight = height;
-        double dist = height - getCurrentHeight();
-        move(dist);
-        enableLiftController();
-    }
-
-    public void setDesiredHeight(double height) {
-        if (height <= config.maxHeight && height >= 0.0)
-            this.desiredHeight = height;
+    public void setTargetHeight(double height, boolean forced) {
+        if(forced || !this.forced) {
+            this.targetHeight = height;
+            double dist = height - getCurrentHeight();
+            moveTo(dist);
+            enableLiftController();
+        }
     }
 
 
-    private void move(double dist) {
-        controller.moveToPosition(dist);
+    private void moveTo(double dist) {
+        controller.moveDistance(dist);
     }
 
     @Override
@@ -154,6 +147,22 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         }
     }
 
+    public boolean isAtHeight() {
+        return Math.abs(getCurrentHeight() - getTargetHeight()) < config.heightTolerance;
+    }
+
+    public double getTargetHeight() {
+        return targetHeight;
+    }
+
+    public boolean isHeightForced() {
+        return forced;
+    }
+
+    public void clearForceHeightFlag() {
+        forced = false;
+    }
+
     public enum Position {
         HIGH,
         LOW
@@ -182,6 +191,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         public double minBadReleaseHeight;
         public double minUnsafeReleaseHeight;
         public double maxUnsafeReleaseHeight;
+        public double heightTolerance;
     }
 
     private class LiftTest extends ManualTest {
@@ -203,7 +213,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
                 case A:
                     double height = (config.maxHeight)
                             * ((axisValue + 1) / 2);
-                    setTargetHeight(height);
+                    setTargetHeight(height, true);
                     break;
                 case Y:
                     enableLiftController();

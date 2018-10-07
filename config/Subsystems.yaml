@@ -5,7 +5,7 @@ operatorInterface:
   slider: { port: 3 }
   knobRange: 90
   knobDeadzone: 7
-  sliderFunction: { minX: -1, minY: 0, maxX: 1, maxY: 85 }
+  sliderFunction: { minX: -1, minY: 0, maxX: 1, maxY: 80.0 }
 drive:
   rightMotor:
     - { type: TALON_SRX, config: { id: 9, inverted: false, feedbackDevice: CTRE_MagEncoder_Relative, limitCurrent: true, continuousCurrentLimit: 30 } }
@@ -13,14 +13,14 @@ drive:
     - { type: VICTOR_SPX, config: { id: 60, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 62, inverted: false } }
   #leftEncoder: { aChannel: 0, bChannel: 1, reverse: true, distancePerRotation: .0471238898}
-  leftEncoder: { distancePerRotation: 49.152 } #not really, just compensating for code error
+  leftEncoder: { distancePerRotation: 49.152 }
   leftMotor:
     - { type: TALON_SRX, config: { id: 0, inverted: false, feedbackDevice: CTRE_MagEncoder_Relative, limitCurrent: true, continuousCurrentLimit: 30 } }
     - { type: VICTOR_SPX, config: { id: 3, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 4, inverted: false } }
     - { type: VICTOR_SPX, config: { id: 1, inverted: false } }
   #rightEncoder: { aChannel: 2, bChannel: 3, reverse: false, distancePerRotation: .0471238898}
-  rightEncoder: { distancePerRotation: 49.152 , inverted: true } #not really, just compensating for code error
+  rightEncoder: { distancePerRotation: 49.152, inverted: true }
   rotationController:
       P: 0.05
       I: 0.0
@@ -96,8 +96,9 @@ lift:
     maxAcceleration: 80.0
   shifter: { forwardChannel: 4, reverseChannel: 5 }
   maxBadPickHeight: 33.0
-  minUnsafeReleaseHeight: 0.0
-  maxUnsafeReleaseHeight: 0.0
+  minUnsafeReleaseHeight: 40.0
+  maxUnsafeReleaseHeight: 50.0
+  heightTolerance: 3.0
 picker:
   leftRollers: { type: VICTOR_SPX, config: { id: 7, inverted: true } }
   rightRollers: { type: VICTOR_SPX, config: { id: 0, inverted: false } }
@@ -109,7 +110,7 @@ picker:
 pivot:
   motor: { type: VICTOR_SPX, config: { id: 59, inverted: false } }
   position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -158.5, minValue: -90.0 }
-  pressureSensor: {channel: 100, supplyVoltage: 5.0}
+  pressureSensor: {channel: 2, supplyVoltage: 5.0}
   pivotPositionController:
     kComp: 0.6
     kMin: 0.6

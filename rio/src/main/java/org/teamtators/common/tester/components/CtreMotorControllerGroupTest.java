@@ -31,8 +31,9 @@ public class CtreMotorControllerGroupTest extends ManualTest implements DataLogg
     public void start() {
         printTestInstructions("Press 'A' to cycle motor. Press 'B' to select all motors. Press 'X' to datalog. Push joystick in direction to move (forward +, backward -)");
         selected = 0;
-        controller = group.getSpeedControllers()[selected];
         axisValue = 0;
+        group.enableFollowerMode();
+        controller = group.getMaster();
     }
 
     @Override
