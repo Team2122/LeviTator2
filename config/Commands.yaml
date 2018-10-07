@@ -114,7 +114,7 @@ $CenterLSwitchAuto:
   - PickerRelease
 
 $LogAuto:
-  - { class: Log, message: "Log auto successful" }
+  - { class: Log, message: "~ERROR: NO AUTO SEQUENCE SELECTED" }
 
 StartLeftPose:
   class: SetPose
@@ -139,3 +139,40 @@ $TestDrive:
 LiftClimb:
   power: -1
   time: 1
+
+
+
+#
+#
+#     Autonomous Sequences
+#
+#
+
+Scale:
+  { class: AutoSelector, type: STARTING_POSITION, left: $ScaleStartLeft, right: $ScaleStartRight }
+
+$ScaleStartLeft:
+  - { class: AutoSelector, type: FIELD_CONFIGURATION, object: 1, L: $AutoStartLeftScaleLeft, R: $AutoStartLeftScaleRight }
+
+$AutoStartLeftScaleLeft:
+  - StartLeftPose
+  - class: DrivePath
+    reverse: true
+    speed: 120
+    parallel: true
+    maxAcceleration: 120.0
+    path:
+      - { x: -100, y: 19 }
+      - { x: -100, y: 162, speed: 60, arcSpeed: 60, radius: 48 }
+      - { x: -88, y: 268 }
+  - { class: WaitForPath, remainingDistance: 4.0 }
+  - PrintPose
+
+$ScaleStartRight:
+  - { class: AutoSelector, type: FIELD_CONFIGURATION, object: 1, L: $AutoStartRightScaleLeft, R: $AutoStartRightScaleRight }
+
+Switch:
+  { class: AutoSelector, type: STARTING_POSITION, center: $SwitchStartCenter }
+
+$SwitchStartCenter:
+  - { class: AutoSelector, type: FIELD_CONFIGURATION, object: 0, L: $AutoSwitchLeft, R: $AutoSwitchRight }

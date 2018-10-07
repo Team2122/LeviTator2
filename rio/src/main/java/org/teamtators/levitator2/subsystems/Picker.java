@@ -23,7 +23,6 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
     private DistanceLaser proximitySensor;
     private Solenoid pickSolenoid;
     private Solenoid releaseSolenoid;
-    private Solenoid deathGripSolenoid;
     private CubeState state;
 
 
@@ -113,7 +112,6 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
         this.proximitySensor = config.proximitySensor.create();
         this.pickSolenoid = config.pickSolenoid.create();
         this.releaseSolenoid = config.releaseSolenoid.create();
-        this.deathGripSolenoid = config.deathGripSolenoid.create();
 
     }
 
@@ -126,7 +124,6 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
         tests.addTest(new DistanceLaserTest("proximitySensor", proximitySensor));
         tests.addTest(new SolenoidTest("pickSolenoid", pickSolenoid));
         tests.addTest(new SolenoidTest("releaseSolenoid", releaseSolenoid));
-        tests.addTest(new SolenoidTest("deathGripSolenoid", deathGripSolenoid));
         return tests;
     }
 
@@ -137,7 +134,6 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
         public DistanceLaserConfig proximitySensor;
         public SolenoidConfig pickSolenoid;
         public SolenoidConfig releaseSolenoid;
-        public SolenoidConfig deathGripSolenoid;
     }
 
     public enum CubeState {

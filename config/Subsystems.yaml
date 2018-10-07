@@ -106,7 +106,6 @@ picker:
   proximitySensor: { channel: 0, distance0V: 20, distance5V: 350 } #just guessing on distance
   pickSolenoid: { channel: 1 } #pick
   releaseSolenoid: { channel: 2 } #max release
-  deathGripSolenoid: { channel: 0 }
 pivot:
   motor: { type: VICTOR_SPX, config: { id: 59, inverted: false } }
   position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -158.5, minValue: -90.0 }
@@ -117,5 +116,8 @@ pivot:
     logData: true
   dangerPressure: 40
 climber:
-  forkSolenoid: { channel: 4 }
+  forkSolenoid: { channel: 6 }
   hookSolenoid: { channel: 3 }
+auto:
+  autoChoices: [ "Scale", "Switch" ]
+  defaultChoice: "$LogAuto"

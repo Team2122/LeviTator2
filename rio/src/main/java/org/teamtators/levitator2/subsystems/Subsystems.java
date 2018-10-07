@@ -10,6 +10,7 @@ import org.teamtators.common.control.Updatable;
 import org.teamtators.common.controllers.Controller;
 import org.teamtators.common.controllers.LogitechF310;
 import org.teamtators.common.scheduler.Subsystem;
+import org.teamtators.levitator2.TatorRobot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,15 +29,17 @@ public class Subsystems extends SubsystemsBase
     private Picker picker;
     private Pivot pivot;
     private Climber climber;
+    private Auto auto;
 
-    public Subsystems() {
+    public Subsystems(TatorRobot robot) {
         oi = new OperatorInterface();
         drive = new Drive();
         picker = new Picker();
         lift = new Lift(picker);
         pivot = new Pivot();
         climber = new Climber();
-        subsystems = Arrays.asList(oi, drive, picker, lift, pivot);
+        auto = new Auto(robot);
+        subsystems = Arrays.asList(oi, drive, picker, lift, pivot, climber, auto);
         updatables = new ArrayList<>();
         motorUpdatables = new ArrayList<>();
     }
@@ -96,6 +99,7 @@ public class Subsystems extends SubsystemsBase
         picker.configure(config.picker);
         pivot.configure(config.pivot);
         climber.configure(config.climber);
+        auto.configure(config.auto);
     }
 
     public OperatorInterface getOperatorInterface() {
@@ -122,6 +126,9 @@ public class Subsystems extends SubsystemsBase
         return climber;
     }
 
+    public Auto getAuto() {
+        return auto;
+    }
 
     public static class Config {
         public OperatorInterface.Config operatorInterface;
@@ -130,5 +137,6 @@ public class Subsystems extends SubsystemsBase
         public Picker.Config picker;
         public Pivot.Config pivot;
         public Climber.Config climber;
+        public Auto.Config auto;
     }
 }

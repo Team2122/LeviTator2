@@ -16,7 +16,7 @@ public class TatorRobot extends TatorRobotBase {
     public TatorRobot(String configDir) {
         super(configDir);
 
-        subsystems = new Subsystems();
+        subsystems = new Subsystems(this);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class TatorRobot extends TatorRobotBase {
 
     @Override
     protected Command getAutoCommand() {
-        return getCommandStore().getCommand("$LogAuto");
+        return subsystems.getAuto().getSelectedCommand();
     }
 
     @Override

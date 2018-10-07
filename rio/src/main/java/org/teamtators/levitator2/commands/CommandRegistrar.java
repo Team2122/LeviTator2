@@ -42,6 +42,8 @@ public class CommandRegistrar {
         commandStore.registerCommand("LiftClimb", () -> new LiftClimb(robot));
         commandStore.putCommand("LiftRecall", new LiftRecall(robot));
 
+        commandStore.registerCommand("AutoSelector", () -> new AutoSelector(robot));
+
     }
 
 }
