@@ -115,3 +115,4 @@ pivot:
     kComp: 0.6
     kMin: 0.6
     logData: true
+  dangerPressure: 40
