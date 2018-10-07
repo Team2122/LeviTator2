@@ -84,6 +84,9 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
             double dist = height - getCurrentHeight();
             moveTo(dist);
             enableLiftController();
+            if(forced) {
+                this.forced = true;
+            }
         }
     }
 
