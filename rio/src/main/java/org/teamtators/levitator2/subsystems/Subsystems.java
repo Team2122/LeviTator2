@@ -118,7 +118,9 @@ public class Subsystems extends SubsystemsBase
         return pivot;
     }
 
-    public Climber getClimber() { return climber; }
+    public Climber getClimber() {
+        return climber;
+    }
 
 
     public static class Config {

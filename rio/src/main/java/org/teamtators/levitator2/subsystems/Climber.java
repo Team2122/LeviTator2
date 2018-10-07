@@ -17,12 +17,12 @@ public class Climber extends Subsystem implements Configurable<Climber.Config>{
         super("Climber");
     }
 
-    public void ReleaseForkSolenoid(){
-
+    public void setForkSolenoidEngage(){
+        forkSolenoid.set(true);
     }
 
-    public void ReleaseHookSolenoid(){
-
+    public void setHookSolenoidEngage(){
+        hookSolenoid.set(true);
     }
 
     @Override
@@ -42,6 +42,4 @@ public class Climber extends Subsystem implements Configurable<Climber.Config>{
         public SolenoidConfig forkSolenoid;
         public SolenoidConfig hookSolenoid;
     }
-
-
 }
