@@ -27,6 +27,7 @@ public class Subsystems extends SubsystemsBase
     private Lift lift;
     private Picker picker;
     private Pivot pivot;
+    private Climber climber;
 
     public Subsystems() {
         oi = new OperatorInterface();
@@ -34,6 +35,7 @@ public class Subsystems extends SubsystemsBase
         picker = new Picker();
         lift = new Lift(picker);
         pivot = new Pivot();
+        climber = new Climber();
         subsystems = Arrays.asList(oi, drive, picker, lift, pivot);
         updatables = new ArrayList<>();
         motorUpdatables = new ArrayList<>();
@@ -93,6 +95,7 @@ public class Subsystems extends SubsystemsBase
         lift.configure(config.lift);
         picker.configure(config.picker);
         pivot.configure(config.pivot);
+        climber.configure(config.climber);
     }
 
     public OperatorInterface getOperatorInterface() {
@@ -115,6 +118,10 @@ public class Subsystems extends SubsystemsBase
         return pivot;
     }
 
+    public Climber getClimber() {
+        return climber;
+    }
+
 
     public static class Config {
         public OperatorInterface.Config operatorInterface;
@@ -122,5 +129,6 @@ public class Subsystems extends SubsystemsBase
         public Lift.Config lift;
         public Picker.Config picker;
         public Pivot.Config pivot;
+        public Climber.Config climber;
     }
 }
