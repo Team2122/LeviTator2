@@ -96,6 +96,8 @@ lift:
     maxAcceleration: 80.0
   shifter: { forwardChannel: 4, reverseChannel: 5 }
   maxBadPickHeight: 33.0
+  minUnsafeReleaseHeight: 0.0
+  maxUnsafeReleaseHeight: 0.0
 picker:
   leftRollers: { type: VICTOR_SPX, config: { id: 7, inverted: true } }
   rightRollers: { type: VICTOR_SPX, config: { id: 0, inverted: false } }
@@ -107,6 +109,7 @@ picker:
 pivot:
   motor: { type: VICTOR_SPX, config: { id: 59, inverted: false } }
   position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -158.5, minValue: -90.0 }
+  pressureSensor: {channel: 100, supplyVoltage: 5.0}
   pivotPositionController:
     kComp: 0.6
     kMin: 0.6

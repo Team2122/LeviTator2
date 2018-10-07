@@ -78,6 +78,10 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         return false;
     }
 
+    public boolean safeToReleaseCube() {
+        return config.minUnsafeReleaseHeight > getCurrentHeight() || config.maxUnsafeReleaseHeight < getCurrentHeight();
+    }
+
     public void setTargetHeight(double height) {
         this.desiredHeight = height;
         double dist = height - getCurrentHeight();
@@ -176,6 +180,8 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         public DoubleSolenoidConfig shifter;
         public double maxBadPickHeight;
         public double minBadReleaseHeight;
+        public double minUnsafeReleaseHeight;
+        public double maxUnsafeReleaseHeight;
     }
 
     private class LiftTest extends ManualTest {

@@ -4,6 +4,7 @@ import org.teamtators.common.config.Configurable;
 import org.teamtators.common.control.Timer;
 import org.teamtators.common.scheduler.Command;
 import org.teamtators.levitator2.TatorRobot;
+import org.teamtators.levitator2.subsystems.Lift;
 import org.teamtators.levitator2.subsystems.Picker;
 import org.teamtators.levitator2.subsystems.Pivot;
 
@@ -12,23 +13,29 @@ public class PickerRelease extends Command implements Configurable<PickerRelease
     private Picker picker;
     private Config config;
     private Timer timer;
+    private Lift lift;
 
     public PickerRelease(TatorRobot robot) {
         super("PickerRelease");
         this.picker = robot.getSubsystems().getPicker();
         this.pivot = robot.getSubsystems().getPivot();
         requires(picker);
+        this.lift = robot.getSubsystems().getLift();
         timer = new Timer();
     }
 
     @Override
     protected void initialize() {
         super.initialize();
-        picker.setRollersPower(config.rollerPower, config.rollerPower);
-        if(config.drop && pivot.getCurrentAngle() > config.minDropAngle) {
-            picker.setMandibles(Picker.Position.Drop);
+        if(lift.safeToReleaseCube()) {
+            picker.setRollersPower(config.rollerPower, config.rollerPower);
+            if(config.drop && pivot.getCurrentAngle() > config.minDropAngle) {
+                picker.setMandibles(Picker.Position.Drop);
+            }
+            timer.start();
+        } else {
+           cancel();
         }
-        timer.start();
     }
 
     @Override
