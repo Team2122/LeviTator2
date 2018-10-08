@@ -23,8 +23,9 @@ PickerPick:
 ^DrivePath: { speed: 100, arcSpeed: 60, radius: 30, maxAcceleration: 120 }
 $PickerPick:
   - PivotPick
-  - { class: Wait, period: 1 }
+  - WaitForAngle
   - PickerPick
+  - PickerHold
   - PivotHome
 #$PickerPickTo45:
 #  - PivotPick
@@ -118,29 +119,22 @@ $LogAuto:
 
 StartLeftPose:
   class: SetPose
-  x: -100
+  x: -109
   y: 19
   yaw: -90
 
-$TestDrive:
-  - StartLeftPose
-  - class: DrivePath
-    reverse: true
-    speed: 120
-    parallel: true
-    maxAcceleration: 120.0
-    path:
-      - { x: -100, y: 19 }
-      - { x: -100, y: 162, speed: 60, arcSpeed: 60, radius: 48 }
-      - { x: -88, y: 268 }
-  - { class: WaitForPath, remainingDistance: 4.0 }
-  - PrintPose
+StartRightPose:
+  class: SetPose
+  x: 109
+  y: 19
+  yaw: -90
 
 LiftClimb:
   power: -1
   time: 1
 
-
+PickerHold:
+  power: -0.2
 
 #
 #
@@ -156,23 +150,112 @@ $ScaleStartLeft:
 
 $AutoStartLeftScaleLeft:
   - StartLeftPose
+  - { class: PickerHold, power: -0.3 }
+#  - LiftSwitch
+  - class: DrivePath
+    reverse: true
+    speed: 120
+#    parallel: true
+    maxAcceleration: 50.0
+    path:
+      - { x: -109, y: 19 }
+      - { x: -109, y: 162, arcSpeed: 120, radius: 256 }
+      - { x: -84, y: 268 }
+#  - { class: WaitForPath, remainingDistance: 36.0 }
+#  - LiftScaleHigh
+#  - { class: WaitForPath, remainingDistance: 1.0 }
+#  - WaitForHeight
+#  - PickerRelease
+#  - LiftHome
+#  - WaitForHeight
+  - { parallel: true, name: $PickerPick }
+  - class: DrivePath
+    parallel: true
+    speed: 120
+    radius: 36
+    maxAcceleration: 50.0
+    path:
+      - { x: -84, y: 268 }
+      - { x: -84, y: 240, arcSpeed: 40, speed: 40.0 }
+      - { x: -78, y: 228 }
+  - WaitForCube
+#  - { class: DriveStraight, distance: -4, endSpeed: 60 }
+
+$AutoStartLeftScaleRight:
+  - StartLeftPose
+  - PickerHold
+  - class: DrivePath
+    parallel: true
+    reverse: true
+    speed: 100
+    maxAcceleration: 70.0
+    path:
+      - { x: -109, y: 19 }
+      - { x: -109, y: 79 }
+      - { x: -109, y: 234, radius: 48 }
+      - { x: 0, y: 234, speed: 70 }
+      - { x: 80, y: 234, radius: 32, arcSpeed: 40, speed: 40 }
+      - { x: 85.5, y: 266 }
+      - { x: 85.5, y: 280 }
+  - { class: WaitForPath, remainingDistance: 100.0 }
+  - LiftScaleHigh
+  - { class: WaitForPath, remainingDistance: 2.0 }
+  - WaitForHeight
+  - PickerRelease
+  - LiftHome
+
+
+$ScaleStartRight:
+  - { class: AutoSelector, type: FIELD_CONFIGURATION, object: 1, L: $AutoStartRightScaleLeft, R: $AutoStartRightScaleRight }
+
+$AutoStartRightScaleLeft:
+  - StartRightPose
+  - PickerHold
+  - class: DrivePath
+    parallel: true
+    reverse: true
+    speed: 100
+    maxAcceleration: 70.0
+    path:
+      - { x: 109, y: 19 }
+      - { x: 109, y: 79 }
+      - { x: 109, y: 234, radius: 48 }
+      - { x: 0, y: 234, speed: 70 }
+      - { x: -80, y: 234, radius: 32, arcSpeed: 40, speed: 40 }
+      - { x: -85.5, y: 266 }
+      - { x: -85.5, y: 280 }
+  - { class: WaitForPath, remainingDistance: 100.0 }
+  - LiftScaleHigh
+  - { class: WaitForPath, remainingDistance: 2.0 }
+  - WaitForHeight
+  - PickerRelease
+  - LiftHome
+
+$AutoStartRightScaleRight:
+  - StartRightPose
+  - { class: PickerHold, power: -0.3 }
+#  - LiftSwitch
   - class: DrivePath
     reverse: true
     speed: 120
     parallel: true
-    maxAcceleration: 120.0
+    maxAcceleration: 50.0
     path:
-      - { x: -100, y: 19 }
-      - { x: -100, y: 162, speed: 60, arcSpeed: 60, radius: 48 }
-      - { x: -88, y: 268 }
-  - { class: WaitForPath, remainingDistance: 4.0 }
-  - PrintPose
-
-$ScaleStartRight:
-  - { class: AutoSelector, type: FIELD_CONFIGURATION, object: 1, L: $AutoStartRightScaleLeft, R: $AutoStartRightScaleRight }
+      - { x: 109, y: 19 }
+      - { x: 109, y: 162, arcSpeed: 120, radius: 256 }
+      - { x: 84, y: 268 }
+  - { class: WaitForPath, remainingDistance: 36.0 }
+  - LiftScaleHigh
+  - { class: WaitForPath, remainingDistance: 1.0 }
+  - WaitForHeight
+  - PickerRelease
+  - LiftHome
 
 Switch:
   { class: AutoSelector, type: STARTING_POSITION, center: $SwitchStartCenter }
 
 $SwitchStartCenter:
   - { class: AutoSelector, type: FIELD_CONFIGURATION, object: 0, L: $AutoSwitchLeft, R: $AutoSwitchRight }
+
+$HoldPowerTestAuto:
+  - { class: PickerHold, power: 0.3 }

@@ -329,7 +329,7 @@ public abstract class TatorRobotBase implements RobotStateListener, Updatable, F
     }
 
     protected void onDriverStationData() {
-        if (reinitialize) {
+        if (reinitialize && false) {
             reinitialize();
             reinitialize = false;
         }

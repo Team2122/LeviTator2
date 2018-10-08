@@ -29,6 +29,7 @@ public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
     private GravityCompensatedController pivotPositionController;
     private PressureSensor pressureSensor;
     private Config config;
+    private double targetAngle;
 
     public Pivot() {
         super("Pivot");
@@ -46,6 +47,7 @@ public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
         if(pressureSensor.getPressure() > config.dangerPressure){
 
             //todo safeties?
+            this.targetAngle = angle;
             pivotPositionController.setSetpoint(angle);
         }
 
@@ -91,11 +93,16 @@ public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
         return Arrays.asList(pivotPositionController);
     }
 
+    public boolean isAtAngle() {
+        return Math.abs(targetAngle - getCurrentAngle()) <= config.angleTolerance;
+    }
+
     public static class Config {
         public SpeedControllerConfig motor;
         public AnalogPotentiometerConfig position;
         public GravityCompensatedController.Config pivotPositionController;
         public PressureSensorConfig pressureSensor;
         public double dangerPressure;
+        public double angleTolerance;
     }
 }

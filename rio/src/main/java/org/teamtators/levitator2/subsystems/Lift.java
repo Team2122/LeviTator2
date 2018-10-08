@@ -28,7 +28,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     private Picker picker;
     private DoubleSolenoid shifter;
     private Position gear;
-    private double targetHeight;
+    private double targetHeight = 0;
     private boolean forced = true;
 
     public Lift(Picker picker) {
@@ -41,7 +41,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
         controller.setVelocityProvider(this::getCurrentVelocity);
         controller.setOutputConsumer(this::setPower);
         controller.setOnTargetPredicate((follower) -> {
-                    return targetHeight == 0 && (getCurrentHeight() <= 2.0);
+                    return targetHeight == 0 && (getCurrentHeight() <= 0.25);
                 }
         );
         //controller.setOnTargetPredicate(ControllerPredicates.alwaysFalse());
@@ -79,7 +79,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
     }
 
     public void setTargetHeight(double height, boolean forced) {
-        if(forced || !this.forced) {
+        if(forced || !this.forced && safeToMoveTo(height)) {
             this.targetHeight = height;
             double dist = height - getCurrentHeight();
             moveTo(dist);
@@ -119,6 +119,7 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
             case TELEOP:
             case AUTONOMOUS:
                 enableLiftController();
+                setTargetHeight(targetHeight, true);
                 shift(Position.HIGH);
                 break;
             case TEST:

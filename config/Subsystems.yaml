@@ -70,7 +70,7 @@ drive:
       maxIError: 10.0
       maxAcceleration: 100.0
       logData: true
-  tankKinematics: { effectiveTrackWidth: 27.25 }
+  tankKinematics: { effectiveTrackWidth: 29 }
 lift:
   maxHeight: 80.0
   liftMotor:
@@ -90,8 +90,8 @@ lift:
     kMinOutput: 0.0
     kHoldPower: 0.047396935749274945
     maxOutput: 0.8
-    minOutput: -0.3
-    logData: true
+    minOutput: -0.4
+#    logData: true
     travelVelocity: 60.0
     maxAcceleration: 80.0
   shifter: { forwardChannel: 4, reverseChannel: 5 }
@@ -109,15 +109,16 @@ picker:
 pivot:
   motor: { type: VICTOR_SPX, config: { id: 59, inverted: false } }
   position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -158.5, minValue: -90.0 }
-  pressureSensor: {channel: 2, supplyVoltage: 5.0}
+  pressureSensor: { channel: 2, supplyVoltage: 5.0 }
   pivotPositionController:
     kComp: 0.6
     kMin: 0.6
-    logData: true
+#    logData: true
   dangerPressure: 40
+  angleTolerance: 5.0
 climber:
   forkSolenoid: { channel: 6 }
   hookSolenoid: { channel: 3 }
 auto:
-  autoChoices: [ "Scale", "Switch" ]
+  autoChoices: [ "Scale", "Switch", "$HoldPowerTestAuto" ]
   defaultChoice: "$LogAuto"
