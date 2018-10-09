@@ -30,6 +30,7 @@ public class Subsystems extends SubsystemsBase
     private Pivot pivot;
     private Climber climber;
     private Auto auto;
+    private Vision vision;
 
     public Subsystems(TatorRobot robot) {
         oi = new OperatorInterface();
@@ -39,7 +40,8 @@ public class Subsystems extends SubsystemsBase
         pivot = new Pivot();
         climber = new Climber();
         auto = new Auto(robot);
-        subsystems = Arrays.asList(oi, drive, picker, lift, pivot, climber, auto);
+        vision = new Vision();
+        subsystems = Arrays.asList(oi, drive, picker, lift, pivot, climber, auto, vision);
         updatables = new ArrayList<>();
         motorUpdatables = new ArrayList<>();
     }
@@ -62,7 +64,7 @@ public class Subsystems extends SubsystemsBase
 
     @Override
     public List<Updatable> getUpdatables() {
-        if(updatables.isEmpty()) {
+        if (updatables.isEmpty()) {
             updatables.addAll(drive.getUpdatables());
             updatables.addAll(pivot.getUpdatables());
             updatables.addAll(lift.getUpdatables());
@@ -128,6 +130,10 @@ public class Subsystems extends SubsystemsBase
 
     public Auto getAuto() {
         return auto;
+    }
+
+    public Vision getVision() {
+        return vision;
     }
 
     public static class Config {

@@ -90,29 +90,50 @@ $TestAuto:
 
 $UpAndOut:
   - LiftSwitch
-  - { class: Wait, period: 0.5 }
+  - WaitForHeight
   - PivotRelease
 
 $LiftHomeWithDelay:
   - { class: Wait, period: .75 }
   - LiftHome
 
-$CenterLSwitchAuto:
-  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, angle: 0.0, maxAcceleration: 60.0, distance: 24.0 }
+$AutoSwitchLeft:
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, angle: 0.0, maxAcceleration: 75.0, distance: 24.0 }
   - { class: DriveRotate, angle: -30.0 }
   - { name: $UpAndOut, parallel: true }
-  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, distance: 76.0, maxAcceleration: 60.0 }
-  - { name: PickerRelease, parallel: true }
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, distance: 80.0, maxAcceleration: 75.0 }
+  - PickerRelease
   - { name: $LiftHomeWithDelay, parallel: true }
-  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, maxAcceleration: 60.0, distance: -76.0 }
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, maxAcceleration: 75.0, distance: -76.0 }
   - { class: DriveRotate, angle: 5.0, rotationSpeed: 270.0 }
   - { name: PickerPick, parallel: true }
-  - { class: DriveStraight, speed: 40.0, endSpeed: 0.0, maxAcceleration: 60.0, distance: 42.0 }
-  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, maxAcceleration: 60.0, distance: -42.0 }
+  - { class: DriveStraight, speed: 40.0, endSpeed: 0.0, maxAcceleration: 75.0, distance: 42.0 }
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, maxAcceleration: 75.0, distance: -42.0 }
   - { class: DriveRotate, angle: -35.0 }
   - LiftSwitch
-  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, distance: 76.0, maxAcceleration: 60.0 }
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, distance: 80.0, maxAcceleration: 75.0 }
   - PickerRelease
+  - LiftHome
+
+$AutoSwitchRight:
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, angle: 0.0, maxAcceleration: 75.0, distance: 24.0 }
+  - { class: DriveRotate, angle: 25.0 }
+  - { name: $UpAndOut, parallel: true }
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, distance: 80.0, maxAcceleration: 75.0 }
+  - PickerRelease
+  - { name: $LiftHomeWithDelay, parallel: true }
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, maxAcceleration: 75.0, distance: -76.0 }
+  - { class: DriveRotate, angle: 0.0, rotationSpeed: 270.0 }
+  - { name: PickerPick, parallel: true }
+  - { class: DriveStraight, speed: 40.0, endSpeed: 0.0, maxAcceleration: 75.0, distance: 42.0 }
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, maxAcceleration: 75.0, distance: -42.0 }
+  - { class: DriveRotate, angle: 25.0 }
+  - LiftSwitch
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, distance: 80.0, maxAcceleration: 75.0 }
+  - PickerRelease
+  - PivotHome
+  - LiftHome
+  - { class: DriveStraight, speed: 80.0, endSpeed: 0.0, distance: -10.0, maxAcceleration: 75.0 }
 
 $LogAuto:
   - { class: Log, message: "~ERROR: NO AUTO SEQUENCE SELECTED" }
@@ -174,13 +195,13 @@ $AutoStartLeftScaleRight:
   - class: DrivePath
     parallel: true
     reverse: true
-    speed: 100
+    speed: 50
     maxAcceleration: 70.0
     path:
       - { x: -109, y: 19 }
       - { x: -109, y: 79 }
       - { x: -109, y: 234, radius: 48 }
-      - { x: 0, y: 234, speed: 70 }
+      - { x: 0, y: 234, speed: 50 }
       - { x: 80, y: 234, radius: 32, arcSpeed: 40, speed: 40 }
       - { x: 85.5, y: 266 }
       - { x: 85.5, y: 280 }
@@ -224,12 +245,12 @@ $AutoStartRightScaleRight:
 #  - LiftSwitch
   - class: DrivePath
     reverse: true
-    speed: 120
+    speed: 50
     parallel: true
     maxAcceleration: 50.0
     path:
       - { x: 109, y: 19 }
-      - { x: 109, y: 162, arcSpeed: 120, radius: 256 }
+      - { x: 109, y: 162, arcSpeed: 50, radius: 256 }
       - { x: 84, y: 268 }
   - { class: WaitForPath, remainingDistance: 36.0 }
   - LiftScaleHigh

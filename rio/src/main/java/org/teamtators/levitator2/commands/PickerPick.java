@@ -23,7 +23,7 @@ public class PickerPick extends Command implements Configurable<PickerPick.Confi
         super("PickerPick");
         this.picker = picker;
         requires(picker);
-        validIn(RobotState.TELEOP);
+        validIn(RobotState.TELEOP, RobotState.AUTONOMOUS);
     }
 
     @Override
