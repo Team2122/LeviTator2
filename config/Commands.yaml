@@ -161,25 +161,12 @@ $AutoStartLeftScaleLeft:
       - { x: -109, y: 19 }
       - { x: -109, y: 162, arcSpeed: 120, radius: 256 }
       - { x: -84, y: 268 }
-#  - { class: WaitForPath, remainingDistance: 36.0 }
-#  - LiftScaleHigh
-#  - { class: WaitForPath, remainingDistance: 1.0 }
-#  - WaitForHeight
-#  - PickerRelease
-#  - LiftHome
-#  - WaitForHeight
-  - { parallel: true, name: $PickerPick }
-  - class: DrivePath
-    parallel: true
-    speed: 120
-    radius: 36
-    maxAcceleration: 50.0
-    path:
-      - { x: -84, y: 268 }
-      - { x: -84, y: 240, arcSpeed: 40, speed: 40.0 }
-      - { x: -78, y: 228 }
-  - WaitForCube
-#  - { class: DriveStraight, distance: -4, endSpeed: 60 }
+  - { class: WaitForPath, remainingDistance: 36.0 }
+  - LiftScaleHigh
+  - { class: WaitForPath, remainingDistance: 1.0 }
+  - WaitForHeight
+  - PickerRelease
+  - LiftHome
 
 $AutoStartLeftScaleRight:
   - StartLeftPose
@@ -259,3 +246,93 @@ $SwitchStartCenter:
 
 $HoldPowerTestAuto:
   - { class: PickerHold, power: 0.3 }
+
+
+
+# 1 cube frozen autos
+
+$AutoStartLeftScaleLeft1Cube:
+  - StartLeftPose
+  - { class: PickerHold, power: -0.3 }
+#  - LiftSwitch
+  - class: DrivePath
+    reverse: true
+    speed: 120
+    parallel: true
+    maxAcceleration: 50.0
+    path:
+      - { x: -109, y: 19 }
+      - { x: -109, y: 162, arcSpeed: 120, radius: 256 }
+      - { x: -84, y: 268 }
+  - { class: WaitForPath, remainingDistance: 36.0 }
+  - LiftScaleHigh
+  - { class: WaitForPath, remainingDistance: 1.0 }
+  - WaitForHeight
+  - PickerRelease
+  - LiftHome
+
+$AutoStartLeftScaleRight1Cube:
+  - StartLeftPose
+  - PickerHold
+  - class: DrivePath
+    parallel: true
+    reverse: true
+    speed: 100
+    maxAcceleration: 70.0
+    path:
+      - { x: -109, y: 19 }
+      - { x: -109, y: 79 }
+      - { x: -109, y: 234, radius: 48 }
+      - { x: 0, y: 234, speed: 70 }
+      - { x: 80, y: 234, radius: 32, arcSpeed: 40, speed: 40 }
+      - { x: 85.5, y: 266 }
+      - { x: 85.5, y: 280 }
+  - { class: WaitForPath, remainingDistance: 100.0 }
+  - LiftScaleHigh
+  - { class: WaitForPath, remainingDistance: 2.0 }
+  - WaitForHeight
+  - PickerRelease
+  - LiftHome
+
+$AutoStartRightScaleLeft1Cube:
+  - StartRightPose
+  - PickerHold
+  - class: DrivePath
+    parallel: true
+    reverse: true
+    speed: 100
+    maxAcceleration: 70.0
+    path:
+      - { x: 109, y: 19 }
+      - { x: 109, y: 79 }
+      - { x: 109, y: 234, radius: 48 }
+      - { x: 0, y: 234, speed: 70 }
+      - { x: -80, y: 234, radius: 32, arcSpeed: 40, speed: 40 }
+      - { x: -85.5, y: 266 }
+      - { x: -85.5, y: 280 }
+  - { class: WaitForPath, remainingDistance: 100.0 }
+  - LiftScaleHigh
+  - { class: WaitForPath, remainingDistance: 2.0 }
+  - WaitForHeight
+  - PickerRelease
+  - LiftHome
+
+$AutoStartRightScaleRight1Cube:
+  - StartRightPose
+  - { class: PickerHold, power: -0.3 }
+#  - LiftSwitch
+  - class: DrivePath
+    reverse: true
+    speed: 120
+    parallel: true
+    maxAcceleration: 50.0
+    path:
+      - { x: 109, y: 19 }
+      - { x: 109, y: 162, arcSpeed: 120, radius: 256 }
+      - { x: 84, y: 268 }
+  - { class: WaitForPath, remainingDistance: 36.0 }
+  - LiftScaleHigh
+  - { class: WaitForPath, remainingDistance: 1.0 }
+  - WaitForHeight
+  - PickerRelease
+  - LiftHome
