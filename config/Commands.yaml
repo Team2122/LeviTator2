@@ -19,12 +19,28 @@ PickerPick:
   t1: .5
   t2: .15
   t3: .55
+AutoPick:
+  class: PickerPick
+  rollerPower: -0.8
+  cubeDetectDistance: 260
+  cubeInDistance: 50
+  cubeCloseDistance: 260
+  sampler: { period: .1 }
+  t1: .5
+  t2: .15
+  t3: .55
 ^DriveRotate: { rotationSpeed: 180, maxAcceleration: 400 }
 ^DrivePath: { speed: 100, arcSpeed: 60, radius: 30, maxAcceleration: 120 }
 $PickerPick:
   - PivotPick
   - WaitForAngle
   - PickerPick
+  - PickerHold
+  - PivotHome
+$AutoPick:
+  - PivotPick
+  - WaitForAngle
+  - AutoPick
   - PickerHold
   - PivotHome
 #$PickerPickTo45:
@@ -245,19 +261,43 @@ $AutoStartRightScaleRight:
 #  - LiftSwitch
   - class: DrivePath
     reverse: true
-    speed: 50
+    speed: 80
     parallel: true
     maxAcceleration: 50.0
     path:
       - { x: 109, y: 19 }
-      - { x: 109, y: 162, arcSpeed: 50, radius: 256 }
-      - { x: 84, y: 268 }
+      - { x: 109, y: 162, arcSpeed: 80, radius: 256 }
+      - { x: 84, y: 272 }
   - { class: WaitForPath, remainingDistance: 36.0 }
   - LiftScaleHigh
   - { class: WaitForPath, remainingDistance: 1.0 }
   - WaitForHeight
   - PickerRelease
   - LiftHome
+  - WaitForHeight
+  - { parallel: true, name: $AutoPick }
+  - class: DrivePath
+    speed: 40
+    maxAcceleration: 50.0
+    path:
+      - { x: 84, y: 272 }
+      - { x: 73, y: 224, radius: 10, arcSpeed: 20 }
+  - WaitForCube
+  - class: DrivePath
+    speed: 50
+    parallel: true
+    reverse: true
+    maxAcceleration: 50.0
+    path:
+      - { x: 73, y: 224 }
+      - { x: 84, y: 248, radius: 6, arcSpeed: 50 }
+      - { x: 80, y: 272 }
+  - WaitForAngle
+  - LiftScaleHigh
+  - WaitForHeight
+  - PickerRelease
+  - LiftHome
+  - WaitForHeight
 
 Switch:
   { class: AutoSelector, type: STARTING_POSITION, center: $SwitchStartCenter }
@@ -271,6 +311,7 @@ $HoldPowerTestAuto:
 
 
 # 1 cube frozen autos
+# todo reduce speeds, accel
 
 $AutoStartLeftScaleLeft1Cube:
   - StartLeftPose

@@ -19,6 +19,7 @@ public class GravityCompensatedController extends AbstractController {
 
         this.angle = angle;
         this.provider = new GravityCompensatedControllerDataProvider();
+        setHoldPower(0);
     }
 
     @Override

@@ -65,10 +65,10 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
                 pickSolenoid.set(false);
                 releaseSolenoid.set(false);
                 break;
-            case Drop:
-                pickSolenoid.set(false);
-                releaseSolenoid.set(true);
-                break;
+//            case Drop:
+//                pickSolenoid.set(false);
+//                releaseSolenoid.set(true);
+//                break;
         }
     }
 
@@ -101,6 +101,7 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
     public enum Position {
         Pick,
         Close,
+        @Deprecated
         Drop
     }
 

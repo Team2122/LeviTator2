@@ -30,7 +30,7 @@ public class PickerRelease extends Command implements Configurable<PickerRelease
         if(lift.safeToReleaseCube()) {
             picker.setRollersPower(config.rollerPower, config.rollerPower);
             if(config.drop && pivot.getCurrentAngle() > config.minDropAngle) {
-                picker.setMandibles(Picker.Position.Drop);
+                picker.setMandibles(Picker.Position.Pick); //Should be Picker.Position.Release, but that cylinder is damaged
             }
             timer.start();
         } else {
