@@ -4,10 +4,7 @@ import org.teamtators.common.TatorRobotBase;
 import org.teamtators.common.config.ConfigCommandStore;
 import org.teamtators.common.scheduler.Commands;
 import org.teamtators.levitator2.TatorRobot;
-import org.teamtators.levitator2.subsystems.Drive;
-import org.teamtators.levitator2.subsystems.Lift;
-import org.teamtators.levitator2.subsystems.Picker;
-import org.teamtators.levitator2.subsystems.Pivot;
+import org.teamtators.levitator2.subsystems.*;
 
 public class CommandRegistrar {
     private final TatorRobot robot;
@@ -45,6 +42,11 @@ public class CommandRegistrar {
         commandStore.registerCommand("LiftClimb", () -> new LiftClimb(robot));
         commandStore.putCommand("LiftRecall", new LiftRecall(robot));
         commandStore.putCommand("WaitForHeight", new WaitForHeight(robot));
+
+        Climber climber = robot.getSubsystems().getClimber();
+        commandStore.putCommand("ClimberExtendHook", new ClimberExtendHook(climber));
+        commandStore.putCommand("ClimberRetractHook", new ClimberRetractHook(climber));
+        commandStore.putCommand("ClimberExtendForks", new ClimberExtendForks(climber));
 
         commandStore.registerCommand("AutoSelector", () -> new AutoSelector(robot));
 

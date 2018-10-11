@@ -10,6 +10,7 @@ public class LiftClimb extends Command implements Configurable<LiftClimb.Config>
     private Config config;
     private Lift lift;
     private Timer shiftTimer;
+    private boolean hasShifted;
 
     public LiftClimb(TatorRobot robot) {
         super("LiftClimb");
@@ -33,8 +34,17 @@ public class LiftClimb extends Command implements Configurable<LiftClimb.Config>
 
     @Override
     public boolean step() {
-        if(shiftTimer.hasPeriodElapsed(config.time)) {
-            lift.setPower(config.power);
+        if(shiftTimer.hasPeriodElapsed(config.time) || hasShifted) {
+            if(!hasShifted) {
+                hasShifted = true;
+                logger.info("Shift state saved");
+            }
+            if(lift.getCurrentHeight() >= config.stopHeight) {
+                lift.setPower(config.power);
+            } else {
+                logger.warn("STOP HEIGHT HIT!");
+                lift.setPower(0);
+            }
         }
         return false;
     }
@@ -48,5 +58,6 @@ public class LiftClimb extends Command implements Configurable<LiftClimb.Config>
     public static class Config {
         public double power;
         public double time;
+        public double stopHeight;
     }
 }

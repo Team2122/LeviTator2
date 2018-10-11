@@ -25,6 +25,10 @@ public class Climber extends Subsystem implements Configurable<Climber.Config> {
         hookSolenoid.set(true);
     }
 
+    public void retractHook() {
+        hookSolenoid.set(false);
+    }
+
     @Override
     public ManualTestGroup createManualTests() {
         ManualTestGroup tests = super.createManualTests();

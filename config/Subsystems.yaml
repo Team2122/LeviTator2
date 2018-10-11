@@ -117,8 +117,8 @@ pivot:
   dangerPressure: 40
   angleTolerance: 5.0
 climber:
-  forkSolenoid: { channel: 6 }
-  hookSolenoid: { channel: 3 }
+  forkSolenoid: { channel: 3 }
+  hookSolenoid: { channel: 0 }
 auto:
   autoChoices: [ "Scale", "Switch", "$HoldPowerTestAuto" ]
   defaultChoice: "$LogAuto"

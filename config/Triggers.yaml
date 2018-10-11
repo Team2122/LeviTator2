@@ -19,6 +19,11 @@ gunner:
   RIGHT_INDEX: start whenPressed LiftSwitch
   RIGHT_MIDDLE: start whenPressed $LiftScaleLowTele
   RIGHT_RING: start whenPressed $LiftScaleHighTele
+  RIGHT_PINKY: start whenPressed ClimberExtendForks
+
+  LEFT_MIDDLE:
+    - start whenPressed ClimberExtendHook
+    - start whenReleased ClimberRetractHook
 gunnerSecondary:
   11: start whenPressed LiftForClimb
   12: start whenPressed LiftRecall

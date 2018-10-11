@@ -117,6 +117,7 @@ public class OperatorInterface extends Subsystem implements Configurable<Operato
         @Override
         public void onButtonDown(LogitechF310.Button button) {
             printTestInfo("Tank: Left = {}, Right = {}", getDriveLeft(), getDriveRight());
+            printTestInfo("Slider position = {} (Raw = {})", getSliderHeight(), getSliderValueRaw());
         }
     }
 }

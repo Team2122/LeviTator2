@@ -169,6 +169,7 @@ StartRightPose:
 LiftClimb:
   power: -1
   time: 1
+  stopHeight: 6
 
 PickerHold:
   power: -0.2
@@ -191,19 +192,43 @@ $AutoStartLeftScaleLeft:
 #  - LiftSwitch
   - class: DrivePath
     reverse: true
-    speed: 120
-#    parallel: true
+    speed: 90
+    parallel: true
     maxAcceleration: 50.0
     path:
       - { x: -109, y: 19 }
-      - { x: -109, y: 162, arcSpeed: 120, radius: 256 }
-      - { x: -84, y: 268 }
+      - { x: -109, y: 168, arcSpeed: 90, radius: 256 }
+      - { x: -84, y: 280 }
   - { class: WaitForPath, remainingDistance: 36.0 }
   - LiftScaleHigh
   - { class: WaitForPath, remainingDistance: 1.0 }
   - WaitForHeight
   - PickerRelease
   - LiftHome
+  - WaitForHeight
+  - { parallel: true, name: $AutoPick }
+  - class: DrivePath
+    speed: 40
+    maxAcceleration: 50.0
+    path:
+      - { x: -84, y: 280 }
+      - { x: -73, y: 232, radius: 10, arcSpeed: 20 }
+  - WaitForCube
+  - class: DrivePath
+    speed: 50
+    parallel: true
+    reverse: true
+    maxAcceleration: 50.0
+    path:
+      - { x: -73, y: 232 }
+      - { x: -84, y: 256, radius: 14, arcSpeed: 50 }
+      - { x: -80, y: 280 }
+  - WaitForAngle
+  - LiftScaleHigh
+  - WaitForHeight
+  - PickerRelease
+  - LiftHome
+  - WaitForHeight
 
 $AutoStartLeftScaleRight:
   - StartLeftPose
@@ -211,7 +236,7 @@ $AutoStartLeftScaleRight:
   - class: DrivePath
     parallel: true
     reverse: true
-    speed: 50
+    speed: 100
     maxAcceleration: 70.0
     path:
       - { x: -109, y: 19 }
@@ -227,6 +252,15 @@ $AutoStartLeftScaleRight:
   - WaitForHeight
   - PickerRelease
   - LiftHome
+  - WaitForHeight
+  - { parallel: true, name: $AutoPick }
+  - class: DrivePath
+    speed: 40
+    maxAcceleration: 50.0
+    path:
+      - { x: 85.5, y: 272 }
+      - { x: 73, y: 228, radius: 10, arcSpeed: 20 }
+  - WaitForCube
 
 
 $ScaleStartRight:
@@ -254,6 +288,14 @@ $AutoStartRightScaleLeft:
   - WaitForHeight
   - PickerRelease
   - LiftHome
+  - { parallel: true, name: $AutoPick }
+  - class: DrivePath
+    speed: 40
+    maxAcceleration: 50.0
+    path:
+      - { x: -85.5, y: 280 }
+      - { x: -73, y: 232, radius: 10, arcSpeed: 20 }
+  - WaitForCube
 
 $AutoStartRightScaleRight:
   - StartRightPose
