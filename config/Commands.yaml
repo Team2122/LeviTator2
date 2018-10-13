@@ -192,13 +192,13 @@ $AutoStartLeftScaleLeft:
 #  - LiftSwitch
   - class: DrivePath
     reverse: true
-    speed: 90
+    speed: 80
     parallel: true
     maxAcceleration: 50.0
     path:
       - { x: -109, y: 19 }
-      - { x: -109, y: 168, arcSpeed: 90, radius: 256 }
-      - { x: -84, y: 280 }
+      - { x: -109, y: 162, arcSpeed: 80, radius: 256 }
+      - { x: -84, y: 276 }
   - { class: WaitForPath, remainingDistance: 36.0 }
   - LiftScaleHigh
   - { class: WaitForPath, remainingDistance: 1.0 }
@@ -211,8 +211,8 @@ $AutoStartLeftScaleLeft:
     speed: 40
     maxAcceleration: 50.0
     path:
-      - { x: -84, y: 280 }
-      - { x: -73, y: 232, radius: 10, arcSpeed: 20 }
+      - { x: -84, y: 276 }
+      - { x: -73, y: 230, radius: 10, arcSpeed: 20 }
   - WaitForCube
   - class: DrivePath
     speed: 50
@@ -220,9 +220,9 @@ $AutoStartLeftScaleLeft:
     reverse: true
     maxAcceleration: 50.0
     path:
-      - { x: -73, y: 232 }
-      - { x: -84, y: 256, radius: 14, arcSpeed: 50 }
-      - { x: -80, y: 280 }
+      - { x: -73, y: 230 }
+      - { x: -84, y: 248, radius: 6, arcSpeed: 50 }
+      - { x: -80, y: 276 }
   - WaitForAngle
   - LiftScaleHigh
   - WaitForHeight
@@ -309,7 +309,7 @@ $AutoStartRightScaleRight:
     path:
       - { x: 109, y: 19 }
       - { x: 109, y: 162, arcSpeed: 80, radius: 256 }
-      - { x: 84, y: 272 }
+      - { x: 84, y: 276 }
   - { class: WaitForPath, remainingDistance: 36.0 }
   - LiftScaleHigh
   - { class: WaitForPath, remainingDistance: 1.0 }
@@ -322,8 +322,8 @@ $AutoStartRightScaleRight:
     speed: 40
     maxAcceleration: 50.0
     path:
-      - { x: 84, y: 272 }
-      - { x: 73, y: 224, radius: 10, arcSpeed: 20 }
+      - { x: 84, y: 276 }
+      - { x: 73, y: 230, radius: 10, arcSpeed: 20 }
   - WaitForCube
   - class: DrivePath
     speed: 50
@@ -331,9 +331,9 @@ $AutoStartRightScaleRight:
     reverse: true
     maxAcceleration: 50.0
     path:
-      - { x: 73, y: 224 }
+      - { x: 73, y: 230 }
       - { x: 84, y: 248, radius: 6, arcSpeed: 50 }
-      - { x: 80, y: 272 }
+      - { x: 80, y: 276 }
   - WaitForAngle
   - LiftScaleHigh
   - WaitForHeight
