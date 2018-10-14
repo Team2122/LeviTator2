@@ -108,7 +108,7 @@ picker:
   releaseSolenoid: { channel: 2 } #max release
 pivot:
   motor: { type: VICTOR_SPX, config: { id: 59, inverted: false } }
-  position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -158.5, minValue: -90.0 }
+  position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -161, minValue: -90.0 }
   pressureSensor: { channel: 2, supplyVoltage: 5.0 }
   pivotPositionController:
     kComp: 0.6
@@ -120,5 +120,5 @@ climber:
   forkSolenoid: { channel: 3 }
   hookSolenoid: { channel: 0 }
 auto:
-  autoChoices: [ "Scale", "Switch", "$HoldPowerTestAuto" ]
-  defaultChoice: "$LogAuto"
+  autoChoices: [ "Scale", "Switch", "Scale" ]
+  defaultChoice: "$DriveForward"

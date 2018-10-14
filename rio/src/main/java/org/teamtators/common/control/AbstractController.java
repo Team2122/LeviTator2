@@ -65,8 +65,8 @@ public abstract class AbstractController extends AbstractUpdatable implements Da
         this.onTarget = this.targetPredicate.test(this);
 
         double computedOutput;
-        if (onTarget && !Double.isNaN(holdPower)) {
-            computedOutput = holdPower;
+        if (onTarget && !Double.isNaN(getHoldPower())) {
+            computedOutput = getHoldPower();
         } else {
             computedOutput = computeOutput(delta);
         }

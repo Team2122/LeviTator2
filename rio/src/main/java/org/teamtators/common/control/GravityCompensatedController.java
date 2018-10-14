@@ -49,6 +49,13 @@ public class GravityCompensatedController extends AbstractController {
         return comp;
     }
 
+    @Override
+    public synchronized double getHoldPower() {
+        double angle = this.angle.getAsDouble();
+        angle = 90 - angle;
+        return .5 * (Math.sin(angle * (Math.PI / 180.0)));
+    }
+
     public static class Config extends AbstractController.Config {
         public double kComp;
         public double kMin;
