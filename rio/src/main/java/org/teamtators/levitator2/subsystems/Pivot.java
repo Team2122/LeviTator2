@@ -49,6 +49,13 @@ public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
             //todo safeties?
             this.targetAngle = angle;
             pivotPositionController.setSetpoint(angle);
+        } else {
+            logger.warn("Below danger pressure! Moving to safe angle!");
+            if(angle < 90) {
+                angle = 90;
+            }
+            this.targetAngle = angle;
+            pivotPositionController.setSetpoint(angle);
         }
 
     }

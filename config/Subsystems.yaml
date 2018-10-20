@@ -108,7 +108,7 @@ picker:
   releaseSolenoid: { channel: 2 } #max release
 pivot:
   motor: { type: VICTOR_SPX, config: { id: 59, inverted: false } }
-  position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -161, minValue: -90.0 }
+  position: { channel: 1, fullRange: 360, inverted: true, continuous: true, offset: -260, minValue: -90.0 }
   pressureSensor: { channel: 2, supplyVoltage: 5.0 }
   pivotPositionController:
     kComp: 0.6
