@@ -406,8 +406,8 @@ public class Drive extends Subsystem implements Configurable<Drive.Config>, Tank
         this.config = config;
         this.tankKinematics = config.tankKinematics;
         poseEstimator.setKinematics(tankKinematics);
-        this.leftMotor = config.leftMotor.create();
-        this.rightMotor = config.rightMotor.create();
+        this.leftMotor = config.leftMotor.create(ctx);
+        this.rightMotor = config.rightMotor.create(ctx);
 
         this.leftEncoder = new SRXEncoder((WPI_TalonSRX) leftMotor.getSpeedControllers()[0]);
         this.rightEncoder = new SRXEncoder((WPI_TalonSRX) rightMotor.getSpeedControllers()[0]);

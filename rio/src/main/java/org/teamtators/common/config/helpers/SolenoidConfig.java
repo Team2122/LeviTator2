@@ -1,6 +1,7 @@
 package org.teamtators.common.config.helpers;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import org.teamtators.common.harness.HarnessContext;
 
 /**
  * Example mapping:
@@ -17,7 +18,7 @@ public class SolenoidConfig implements ConfigHelper<Solenoid> {
         this.channel = channel;
     }
 
-    public Solenoid create() {
+    public Solenoid create(HarnessContext ctx) {
         return new Solenoid(channel);
     }
 }

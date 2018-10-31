@@ -1,0 +1,5 @@
+enable: false
+analogSources:
+  DebugSource1:
+    type: Constant
+    value: 5.0

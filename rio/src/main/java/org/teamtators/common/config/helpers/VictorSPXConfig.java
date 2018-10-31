@@ -4,11 +4,12 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.Timer;
+import org.teamtators.common.harness.HarnessContext;
 
 public class VictorSPXConfig extends CtreMotorControllerConfig implements ConfigHelper<WPI_VictorSPX> {
     public static int REQUIRED_FIRMWARE = 0x0308; // VictorSPX firmware 3.8
 
-    public WPI_VictorSPX create() {
+    public WPI_VictorSPX create(HarnessContext ctx) {
         super.validate();
         WPI_VictorSPX motor;
         if (super.logTiming)

@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Collects quantitative data from various sources on the robot and logs it to a file
+ * Collects quantitative data from various analogSources on the robot and logs it to a file
  */
 
 public class DataCollector implements Updatable {

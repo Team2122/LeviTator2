@@ -1,5 +1,6 @@
 package org.teamtators.common.config.helpers;
 
+import org.teamtators.common.harness.HarnessContext;
 import org.teamtators.common.hw.AnalogPotentiometer;
 
 public class AnalogPotentiometerConfig implements ConfigHelper<AnalogPotentiometer> {
@@ -12,8 +13,8 @@ public class AnalogPotentiometerConfig implements ConfigHelper<AnalogPotentiomet
     public int oversampleBits = 1;
     public boolean inverted = false;
 
-    public AnalogPotentiometer create() {
-        AnalogPotentiometer pot = new AnalogPotentiometer(channel);
+    public AnalogPotentiometer create(HarnessContext ctx) {
+        AnalogPotentiometer pot = ctx != null ? new AnalogPotentiometer(ctx) : new AnalogPotentiometer(channel);
         pot.setFullRange(fullRange);
         pot.setOffset(offset);
         pot.setMinValue(minValue);

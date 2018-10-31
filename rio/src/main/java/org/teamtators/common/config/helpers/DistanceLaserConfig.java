@@ -1,5 +1,6 @@
 package org.teamtators.common.config.helpers;
 
+import org.teamtators.common.harness.HarnessContext;
 import org.teamtators.common.hw.DistanceLaser;
 
 public class DistanceLaserConfig implements ConfigHelper<DistanceLaser> {
@@ -31,7 +32,10 @@ public class DistanceLaserConfig implements ConfigHelper<DistanceLaser> {
         this.distance5V = distance5V;
     }
 
-    public DistanceLaser create() {
-        return new DistanceLaser(channel, distance0V, distance5V);
+    public DistanceLaser create(HarnessContext ctx) {
+        DistanceLaser laser = new DistanceLaser(channel);
+        laser.setDistance0V(distance0V);
+        laser.setDistance5V(distance5V);
+        return laser;
     }
 }

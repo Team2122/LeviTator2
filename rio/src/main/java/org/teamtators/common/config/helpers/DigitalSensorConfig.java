@@ -1,5 +1,6 @@
 package org.teamtators.common.config.helpers;
 
+import org.teamtators.common.harness.HarnessContext;
 import org.teamtators.common.hw.DigitalSensor;
 
 /**
@@ -30,7 +31,7 @@ public class DigitalSensorConfig implements ConfigHelper<DigitalSensor> {
         this.type = type;
     }
 
-    public DigitalSensor create() {
+    public DigitalSensor create(HarnessContext ctx) {
         DigitalSensor digitalSensor = new DigitalSensor(channel, type);
         return digitalSensor;
     }

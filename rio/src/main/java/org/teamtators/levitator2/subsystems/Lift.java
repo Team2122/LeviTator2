@@ -97,11 +97,11 @@ public class Lift extends Subsystem implements Configurable<Lift.Config>, Deconf
 
     @Override
     public void configure(Config config) {
-        liftMotor = config.liftMotor.create();
+        liftMotor = config.liftMotor.create(ctx);
         liftEncoder = new SRXEncoder(liftMotor.getMaster());
         liftEncoder.configure(config.liftEncoder);
         controller.configure(config.liftController);
-        shifter = config.shifter.create();
+        shifter = config.shifter.create(ctx);
 
         this.config = config;
     }

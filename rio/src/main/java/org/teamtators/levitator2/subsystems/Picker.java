@@ -107,12 +107,12 @@ public class Picker extends Subsystem implements Configurable<Picker.Config> {
 
     public void configure(Config config) {
 
-        this.leftRollers = config.leftRollers.create();
-        this.rightRollers = config.rightRollers.create();
-        this.cubeSensor = config.cubeSensor.create();
-        this.proximitySensor = config.proximitySensor.create();
-        this.pickSolenoid = config.pickSolenoid.create();
-        this.releaseSolenoid = config.releaseSolenoid.create();
+        this.leftRollers = config.leftRollers.create(ctx);
+        this.rightRollers = config.rightRollers.create(ctx);
+        this.cubeSensor = config.cubeSensor.create(ctx);
+        this.proximitySensor = config.proximitySensor.create(ctx);
+        this.pickSolenoid = config.pickSolenoid.create(ctx);
+        this.releaseSolenoid = config.releaseSolenoid.create(ctx);
 
     }
 

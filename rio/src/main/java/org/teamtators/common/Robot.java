@@ -64,6 +64,7 @@ public class Robot {
         // TODO: See if the next line is necessary
         // Resource.RestartProgram();
         this.configDir = configDir;
+        System.setProperty("configDir", configDir);
         networkTables = NetworkTableInstance.getDefault();
         networkTables.setNetworkIdentity("Robot");
         networkTables.startServer("/home/lvuser/networktables.ini");// must be before b

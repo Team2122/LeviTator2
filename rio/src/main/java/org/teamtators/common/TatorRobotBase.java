@@ -30,6 +30,7 @@ import org.teamtators.common.datalogging.Dashboard;
 import org.teamtators.common.datalogging.DashboardUpdatable;
 import org.teamtators.common.datalogging.DashboardUpdater;
 import org.teamtators.common.datalogging.DataCollector;
+import org.teamtators.common.harness.config.HarnessConfigurator;
 import org.teamtators.common.scheduler.*;
 import org.teamtators.common.tester.AutomatedTester;
 import org.teamtators.common.tester.ManualTester;
@@ -111,6 +112,7 @@ public abstract class TatorRobotBase implements RobotStateListener, Updatable, F
     }
 
     protected void doInitialize() {
+        configureHarness();
         configureSubsystems();
         configureCommands();
         configureTriggers();
@@ -140,6 +142,13 @@ public abstract class TatorRobotBase implements RobotStateListener, Updatable, F
         this.smartDashboardUpdater.add(smartDashboardUpdatable);
     }
 
+    protected void configureHarness() {
+        try {
+            HarnessConfigurator.createContext();
+        } catch (Exception e) {
+            throw new RuntimeException("Error while configuring Harness", e);
+        }
+    }
 
     protected void configureSubsystems() {
         pdp = new PowerDistributionPanel();

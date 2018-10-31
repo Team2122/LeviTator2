@@ -3,7 +3,11 @@ package org.teamtators.common.hw;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import org.teamtators.common.harness.HarnessContext;
+import org.teamtators.common.harness.HarnessHooks;
+import org.teamtators.common.harness.HarnessTestable;
 
+@HarnessTestable
 public class AnalogPotentiometer extends SensorBase implements Potentiometer, Sendable {
     public static final double DEFAULT_FULL_RANGE = 360.0;
     public static final double DEFAULT_OFFSET = 0.0;
@@ -14,11 +18,16 @@ public class AnalogPotentiometer extends SensorBase implements Potentiometer, Se
     private double minValue = 0.0;
     private boolean continuous = DEFAULT_CONTINUOUS;
     private boolean inverted = false;
+    private String name = "default_analog_potentiometer";
 
     public AnalogPotentiometer(int channel) {
-        analogInput = new AnalogInput(channel);
+        analogInput = HarnessHooks.getAnalogInput(null, channel, null);
 
         addChild(analogInput);
+    }
+
+    public AnalogPotentiometer(HarnessContext ctx) {
+        analogInput = HarnessHooks.getAnalogInput(getName(),255, ctx);
     }
 
     public double getRawVoltage() {

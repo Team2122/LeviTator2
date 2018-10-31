@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.teamtators.common.TatorRobotBase;
 import org.teamtators.common.config.ConfigException;
+import org.teamtators.common.harness.HarnessContext;
 import org.teamtators.common.hw.NoSpeedController;
 import org.teamtators.common.hw.SpeedControllerGroup;
 
@@ -100,7 +101,7 @@ public class SpeedControllerConfig implements ConfigHelper<SpeedController> {
     }
 
     @Override
-    public SpeedController create() {
+    public SpeedController create(HarnessContext ctx) {
         SpeedController speedController;
         switch (type) {
             case NONE:
@@ -125,13 +126,13 @@ public class SpeedControllerConfig implements ConfigHelper<SpeedController> {
                 speedController = new VictorSP(channel);
                 break;
             default:
-                return configureController();
+                return configureController(ctx);
         }
         speedController.setInverted(inverted);
         return speedController;
     }
 
-    private SpeedController configureController() {
+    private SpeedController configureController(HarnessContext ctx) {
         if (this.config == null) {
             throw new ConfigException("Must specify config for GROUP, TALON_SRX and VICTOR_SPX SpeedControllerConfig");
         }
@@ -156,7 +157,7 @@ public class SpeedControllerConfig implements ConfigHelper<SpeedController> {
             throw new ConfigException(String.format("Error creating %s from SpeedControllerConfig",
                     configHelperClass.getSimpleName()), e);
         }
-        return configHelper.create();
+        return configHelper.create(ctx);
     }
 
     public enum Type {

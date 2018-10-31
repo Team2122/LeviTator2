@@ -2,8 +2,9 @@ package org.teamtators.common.config.helpers;
 
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
+import org.teamtators.common.harness.HarnessContext;
 
-public class EncoderConfig {
+public class EncoderConfig implements ConfigHelper<Encoder> {
     private int aChannel, bChannel;
     private boolean reverse = false;
     private double distancePerPulse = 1.0;
@@ -58,7 +59,7 @@ public class EncoderConfig {
         this.samplesToAverage = samplesToAverage;
     }
 
-    public Encoder create() {
+    public Encoder create(HarnessContext ctx) {
         Encoder encoder = new Encoder(aChannel, bChannel, reverse, encodingType);
         encoder.setDistancePerPulse(distancePerPulse);
         if (samplesToAverage != 0)

@@ -3,6 +3,7 @@ package org.teamtators.common.config.helpers;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import org.teamtators.common.harness.HarnessContext;
 
 public class TalonSRXConfig extends CtreMotorControllerConfig implements ConfigHelper<WPI_TalonSRX> {
     public static int REQUIRED_FIRMWARE = 0x0308; // TalonSRX firmware 3.8
@@ -15,7 +16,7 @@ public class TalonSRXConfig extends CtreMotorControllerConfig implements ConfigH
     public int peakCurrentLimit = 0;
     public int peakCurrentDurationMillis = 0;
 
-    public WPI_TalonSRX create() {
+    public WPI_TalonSRX create(HarnessContext ctx) {
         super.validate();
         WPI_TalonSRX motor = new WPI_TalonSRX(id);
         motor.enableCurrentLimit(false);

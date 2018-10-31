@@ -1,7 +1,7 @@
 package org.teamtators.common.hw;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
+import org.teamtators.common.harness.HarnessHooks;
 
 public class DistanceLaser {
     private double distance0V;
@@ -11,25 +11,20 @@ public class DistanceLaser {
 
     /**
      * @param distanceLaser the input that represents this distanceLaser
-     * @param distance0V    the distance represented by a reading of 0V (in cm)
-     * @param distance5V    the distance represented by a reading of 5V (in cm)
      */
-    public DistanceLaser(AnalogInput distanceLaser, double distance0V, double distance5V) {
+    public DistanceLaser(AnalogInput distanceLaser) {
         this.distanceLaser = distanceLaser;
-        this.distance0V = distance0V;
-        this.distance5V = distance5V;
     }
 
     /**
-     * @param channel    the channel of the input that represents this distanceLaser
-     * @param distance0V the distance represented by a reading of 0V (in cm)
-     * @param distance5V the distance represented by a reading of 5V (in cm)
+     * @param channel the channel of the input that represents this distanceLaser
      */
-    public DistanceLaser(int channel, double distance0V, double distance5V) {
-        this(new AnalogInput(channel), distance0V, distance5V);
+    public DistanceLaser(int channel) {
+        this(HarnessHooks.getAnalogInput(null, channel, null));
     }
 
     public double getDistance() {
+        //todo simulate (or return 5) getVoltage5V
         double prop = distanceLaser.getVoltage() / RobotController.getVoltage5V();
         return (prop * (distance5V - distance0V)) + distance0V;
     }
@@ -48,5 +43,13 @@ public class DistanceLaser {
 
     AnalogInput getAnalogInput() {
         return distanceLaser;
+    }
+
+    public void setDistance0V(double distance0V) {
+        this.distance0V = distance0V;
+    }
+
+    public void setDistance5V(double distance5V) {
+        this.distance5V = distance5V;
     }
 }

@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.teamtators.common.config.Deconfigurable;
 import org.teamtators.common.control.Updatable;
+import org.teamtators.common.harness.HarnessContext;
+import org.teamtators.common.harness.HarnessHooks;
 import org.teamtators.common.tester.AutomatedTest;
 import org.teamtators.common.tester.AutomatedTestable;
 import org.teamtators.common.tester.ManualTestGroup;
@@ -17,6 +19,11 @@ public abstract class Subsystem implements Updatable, RobotStateListener, Manual
         Deconfigurable {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final String name;
+    protected static HarnessContext ctx;
+
+    static {
+        ctx = HarnessHooks.getContext();
+    }
 
     private Command requiringCommand = null;
 

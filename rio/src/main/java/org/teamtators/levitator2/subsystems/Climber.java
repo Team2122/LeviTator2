@@ -38,8 +38,8 @@ public class Climber extends Subsystem implements Configurable<Climber.Config> {
     }
 
     public void configure(Config config) {
-        this.forkSolenoid = config.forkSolenoid.create();
-        this.hookSolenoid = config.hookSolenoid.create();
+        this.forkSolenoid = config.forkSolenoid.create(ctx);
+        this.hookSolenoid = config.hookSolenoid.create(ctx);
     }
 
     public static class Config {

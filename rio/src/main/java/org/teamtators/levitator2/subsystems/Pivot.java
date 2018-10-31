@@ -66,9 +66,9 @@ public class Pivot extends Subsystem implements Configurable<Pivot.Config> {
 
     @Override
     public void configure(Config config) {
-        this.motor = config.motor.create();
-        this.position = config.position.create();
-        this.pressureSensor = config.pressureSensor.create();
+        this.motor = config.motor.create(ctx);
+        this.position = config.position.create(ctx);
+        this.pressureSensor = config.pressureSensor.create(ctx);
         this.pivotPositionController.configure(config.pivotPositionController);
         this.config = config;
     }
